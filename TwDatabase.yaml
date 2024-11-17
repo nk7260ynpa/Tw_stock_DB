@@ -5,7 +5,7 @@ services:
       ports: 
           - 3306:3306
       environment: 
-          MYSQL_DATABASE: TWDatabase
+          MYSQL_DATABASE: TWSE
           MYSQL_USER: user
           MYSQL_PASSWORD: stock
           MYSQL_ROOT_PASSWORD: stock
@@ -23,7 +23,7 @@ services:
       depends_on:
         - database
       networks:
-          - db_network
+        - db_network
      
 networks:
   db_network:
