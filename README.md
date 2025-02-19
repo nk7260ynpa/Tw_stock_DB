@@ -10,6 +10,8 @@ docker compose -f TwDatabase.yaml up -d
 ```
 
 ## 建立資料庫
+
+### 建立Taiwan Stock Exchange Database
 ```SQL
 CREATE TABLE `TWSE` . `DailyPrice` (
     `Date` DATE NOT NULL,
@@ -31,3 +33,18 @@ CREATE TABLE `TWSE` . `DailyPrice` (
     PRIMARY KEY (`Date`, `SecurityCode`)
 )
 ```
+
+### 建立Over-the-Counter Exchange Database
+```SQL
+CREATE TABLE `TPEX` . `DailyPrice` (
+    `Date` DATE NOT NULL,
+	`Code` VARCHAR(10) NOT NULL,
+	`Close` DECIMAL(10, 2) NOT NULL,
+    `Open` DECIMAL(10, 2) NOT NULL,
+    `High` DECIMAL(10, 2) NOT NULL,
+    `Low` DECIMAL(10, 2) NOT NULL,
+    `TradingVolume` DECIMAL(10, 2) NOT NULL,
+    `TradeAmt` DECIMAL(12, 2) NOT NULL,
+    `No.ofTransactions` DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (`Date`, `SecurityCode`)
+)
