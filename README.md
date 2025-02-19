@@ -43,8 +43,9 @@ CREATE TABLE `TPEX` . `DailyPrice` (
     `Open` DECIMAL(10, 2) NOT NULL,
     `High` DECIMAL(10, 2) NOT NULL,
     `Low` DECIMAL(10, 2) NOT NULL,
-    `TradingVolume` DECIMAL(10, 2) NOT NULL,
-    `TradeAmt` DECIMAL(12, 2) NOT NULL,
+    `TradingVol(shares)` DECIMAL(10, 2) NOT NULL,
+    `TradeAmt.(NTD)` DECIMAL(12, 2) NOT NULL,
     `No.ofTransactions` DECIMAL(10, 2) NOT NULL,
+    `LastBidVolume` DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (`Date`, `SecurityCode`)
 )
