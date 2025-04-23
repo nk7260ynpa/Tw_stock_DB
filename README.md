@@ -9,6 +9,12 @@ docker volume create StockDB
 docker compose -f TwDatabase.yaml up -d
 ```
 
+安裝爬蟲套件
+```bash
+pip install -r https://github.com/nk7260ynpa/tw_stock_crawer/requirements.txt
+pip install git+https://github.com/nk7260ynpa/tw_stock_crawer.git
+```
+
 ## 建立資料庫
 
 ### 建立Taiwan Stock Exchange Database
