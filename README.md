@@ -1,5 +1,13 @@
 # DB_builder
 
+安裝爬蟲套件
+```bash
+pip install -r https://github.com/nk7260ynpa/tw_stock_crawer/requirements.txt
+pip install git+https://github.com/nk7260ynpa/tw_stock_crawer.git
+```
+
+# 建立資料庫
+## 啟動SQL DB Server
 ```bash
 # 建立 DB docker volume
 docker volume create StockDB
@@ -9,57 +17,10 @@ docker volume create StockDB
 docker compose -f TwDatabase.yaml up -d
 ```
 
-安裝爬蟲套件
-```bash
-pip install -r https://github.com/nk7260ynpa/tw_stock_crawer/requirements.txt
-pip install git+https://github.com/nk7260ynpa/tw_stock_crawer.git
-```
-
 ## 建立資料庫
-
-### 建立Taiwan Stock Exchange Database
-```SQL
-CREATE TABLE `TWSE` . `DailyPrice` (
-    `Date` DATE NOT NULL,
-	`SecurityCode` VARCHAR(10) NOT NULL,
-	`StockName` VARCHAR(15) NOT NULL,
-	`TradeVolume` BIGINT NOT NULL,
-    `Transaction` INT NOT NULL,
-    `TradeValue` BIGINT NOT NULL,
-    `OpeningPrice` DECIMAL(7,2) NOT NULL,
-    `HighestPrice` DECIMAL(7,2) NOT NULL,
-    `LowestPrice` DECIMAL(7,2) NOT NULL,
-    `ClosingPrice` DECIMAL(7,2) NOT NULL,
-    `Change` DECIMAL(7,2) NOT NULL,
-    `LastBestBidPrice` DECIMAL(7,2) NOT NULL,
-    `LastBestBidVolume` INT NOT NULL,
-    `LastBestAskPrice` DECIMAL(7,2) NOT NULL,
-    `LastBestAskVolume` INT NOT NULL,
-    `PriceEarningratio` DECIMAL(7,2) NOT NULL,
-    PRIMARY KEY (`Date`, `SecurityCode`)
-)
+```bash
+# 建立TWSE、TPEX、TAIFEX資料庫
+python build_db.py
 ```
 
-### 建立Over-the-Counter Exchange Database
-```SQL
-CREATE TABLE `TPEX` . `DailyPrice` (
-    `Date` DATE NOT NULL,
-	`Code` VARCHAR(10) NOT NULL,
-	`Close` DECIMAL(10, 2) NOT NULL,
-    `Open` DECIMAL(10, 2) NOT NULL,
-    `High` DECIMAL(10, 2) NOT NULL,
-    `Low` DECIMAL(10, 2) NOT NULL,
-    `TradeVol(shares)` DECIMAL(10, 2) NOT NULL,
-    `TradeAmt.(NTD)` DECIMAL(12, 2) NOT NULL,
-    `No.ofTransactions` DECIMAL(10, 2) NOT NULL,
-    `LastBestBidPrice` DECIMAL(10, 2) NOT NULL,
-    `LastBidVolume` DECIMAL(10, 2) NOT NULL,
-    `LastBestAskPrice` DECIMAL(10, 2) NOT NULL,
-    `LastBestAskVolume` DECIMAL(10, 2) NOT NULL,
-    `IssuedShares` DECIMAL(10, 2) NOT NULL,
-    `NextDayUp-LimitPrice` DECIMAL(10, 2) NOT NULL,
-    `NextDayDown-LimitPrice` DECIMAL(10, 2) NOT NULL,
-    PRIMARY KEY (`Date`, `Code`)
-)
-```
 

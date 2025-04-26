@@ -2,7 +2,7 @@ from mysql.connector import Error
 
 import mysql.connector
 
-def create_database():
+def create_stock_database():
     try:
         # Connect to MySQL server
         connection = mysql.connector.connect(
