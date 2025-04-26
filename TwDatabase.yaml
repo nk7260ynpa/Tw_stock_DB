@@ -5,8 +5,7 @@ services:
       ports: 
           - 3306:3306
       environment: 
-          MYSQL_DATABASE: TWSE
-          MYSQL_USER: user
+          MYSQL_USER: user 
           MYSQL_PASSWORD: stock
           MYSQL_ROOT_PASSWORD: stock
       volumes:

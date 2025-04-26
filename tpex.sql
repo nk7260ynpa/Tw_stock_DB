@@ -1,31 +1,19 @@
-CREATE TABLE `TWSE`.`DailyPrice` (
+CREATE TABLE `TPEX` . `DailyPrice` (
     `Date` DATE NOT NULL,
-    `SecurityCode` VARCHAR(10) NOT NULL,
-    `StockName` VARCHAR(15) NOT NULL,
-    `TradeVolume` BIGINT NOT NULL,
-    `Transaction` INT NOT NULL,
-    `TradeValue` BIGINT NOT NULL,
-    `OpeningPrice` DECIMAL(7,2) NOT NULL,
-    `HighestPrice` DECIMAL(7,2) NOT NULL,
-    `LowestPrice` DECIMAL(7,2) NOT NULL,
-    `ClosingPrice` DECIMAL(7,2) NOT NULL,
-    `Change` DECIMAL(7,2) NOT NULL,
-    `LastBestBidPrice` DECIMAL(7,2) NOT NULL,
-    `LastBestBidVolume` INT NOT NULL,
-    `LastBestAskPrice` DECIMAL(7,2) NOT NULL,
-    `LastBestAskVolume` INT NOT NULL,
-    `PriceEarningratio` DECIMAL(7,2) NOT NULL,
-    PRIMARY KEY (`Date`, `SecurityCode`)
-);
-
-CREATE TABLE `TWSE`.`StockName` (
-    `SecurityCode` VARCHAR(10) NOT NULL,
-    `StockName` VARCHAR(15) NOT NULL,
-    PRIMARY KEY (`SecurityCode`)
-);
-
-CREATE TABLE `TWSE`.`Translate` (
-    `English` VARCHAR(10) NOT NULL,
-    `Chinese` VARCHAR(15) NOT NULL,
-    PRIMARY KEY (`English`)
-);
+	`Code` VARCHAR(10) NOT NULL,
+	`Close` DECIMAL(10, 2) NOT NULL,
+    `Open` DECIMAL(10, 2) NOT NULL,
+    `High` DECIMAL(10, 2) NOT NULL,
+    `Low` DECIMAL(10, 2) NOT NULL,
+    `TradeVol(shares)` DECIMAL(10, 2) NOT NULL,
+    `TradeAmt.(NTD)` DECIMAL(12, 2) NOT NULL,
+    `No.ofTransactions` DECIMAL(10, 2) NOT NULL,
+    `LastBestBidPrice` DECIMAL(10, 2) NOT NULL,
+    `LastBidVolume` DECIMAL(10, 2) NOT NULL,
+    `LastBestAskPrice` DECIMAL(10, 2) NOT NULL,
+    `LastBestAskVolume` DECIMAL(10, 2) NOT NULL,
+    `IssuedShares` DECIMAL(10, 2) NOT NULL,
+    `NextDayUp-LimitPrice` DECIMAL(10, 2) NOT NULL,
+    `NextDayDown-LimitPrice` DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (`Date`, `Code`)
+)

@@ -1,45 +1,36 @@
+from mysql.connector import Error
+
 import mysql.connector
 
-def connect_to_db():
+def create_database():
     try:
+        # Connect to MySQL server
         connection = mysql.connector.connect(
-            host="localhost",
+            host='localhost',
             port=3306,
-            user="root",
-            password="stock",
-            database="TWSE"
+            user='root',  # Replace with your MySQL username
+            password='stock'  # Replace with your MySQL password
         )
-        print("Connected to the database.")
-        return connection
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-        return None
 
-def execute_query(connection, query):
-    try:
-        cursor = connection.cursor()
-        cursor.execute(query)
-        if query.strip().lower().startswith("select"):
-            results = cursor.fetchall()
-            for row in results:
-                print(row)
-        else:
-            connection.commit()
-            print("Query executed successfully.")
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
+        if connection.is_connected():
+            print("Connected to MySQL server.")
+            cursor = connection.cursor()
+
+            # Prompt user for database name
+            db_name = input("Enter the name of the database to create: ")
+            create_db_query = f"CREATE DATABASE {db_name}"
+            
+            # Execute the query
+            cursor.execute(create_db_query)
+            print(f"Database '{db_name}' created successfully.")
+
+    except Error as e:
+        print(f"Error: {e}")
     finally:
-        cursor.close()
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection closed.")
 
 if __name__ == "__main__":
-    conn = connect_to_db()
-    if conn:
-        try:
-            while True:
-                sql_query = input("Enter SQL query (or type 'exit' to quit): ")
-                if sql_query.lower() == "exit":
-                    break
-                execute_query(conn, sql_query)
-        finally:
-            conn.close()
-            print("Connection closed.")
+    create_database()
