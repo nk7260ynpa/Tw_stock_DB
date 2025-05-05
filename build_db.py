@@ -1,5 +1,5 @@
 from mysql.connector import Error
-from conn import connect_server
+from conncli import connect_server
 import mysql.connector
 
 def create_stock_database():
