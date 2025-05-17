@@ -3,6 +3,9 @@ from sqlalchemy import text
 import argparse
 
 def main(args):
+    """
+    Create MySQL databases.
+    """
     databases = ["TWSE", "TPEX", "TAIFEX"]
 
     conn = MySQLRouter(args.host, args.user, args.password).mysql_conn
