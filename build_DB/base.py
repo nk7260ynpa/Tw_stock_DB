@@ -29,13 +29,16 @@ class BaseBuildTABLE(ABC):
         count = result.fetchone()[0]
         return count > 0
     
+    @abstractmethod
+    def post_process(self):
+        pass
+    
     def build(self, conn):
         if not self.check_table_exists(conn):
             conn.execute(text(self.sql))
+            self.post_process()
             print(f"Table '{self.table_name}' created successfully.")
         else:
             print(f"Table '{self.table_name}' already exists.")
 
-    @abstractmethod
-    def post_process(self, conn):
-        pass
+    
