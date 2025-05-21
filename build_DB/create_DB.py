@@ -25,11 +25,11 @@ class BuildDB():
         else:
             return False
         
-    def build(self, conn):
-        if not self.check_db_exists(conn):
-            conn.execute(text(self.sql))
+    def build(self, conn_server):
+        if not self.check_db_exists(conn_server):
+            conn_server.execute(text(self.sql))
             print(f"Database '{self.db_name}' created successfully.")
         else:
             print(f"Database '{self.db_name}' already exists.")
-        conn.close()
+        conn_server.close()
 
