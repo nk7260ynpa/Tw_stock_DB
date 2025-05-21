@@ -1,6 +1,10 @@
+import os
 from abc import ABC, abstractmethod
 import re
+
 from sqlalchemy import text
+
+from build_DB.create_DB import BuildDB
 
 class BaseBuildTABLE(ABC):
     def __init__(self, sql_file_path):
@@ -41,4 +45,22 @@ class BaseBuildTABLE(ABC):
         else:
             print(f"Table '{self.table_name}' already exists.")
 
+class BaseBuild(ABC):
+    def __init__(self, typeclass, name):
+        self.typeclass = typeclass
+        self.name = name
+        self.folder = os.path.join("build_DB", name)
+
+    def build_db(self, conn_server):
+        sql_path = os.path.join(self.folder, f"{self.name}_sql", "db.sql")
+        build_obj = BuildDB(sql_path)
+        build_obj.build(conn_server)
+    
+    def build_table(self, conn):
+        for subclass in self.typeclass.__subclasses__():
+            sql_path = os.path.join(self.folder, f"{self.name}_sql", f"{subclass.__name__}.sql")
+            build_obj = subclass(sql_path)
+            build_obj.build(conn)
+
+               
     
