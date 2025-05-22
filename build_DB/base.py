@@ -8,9 +8,16 @@ from build_DB.create_DB import BuildDB
 
 class BaseBuildTABLE(ABC):
     def __init__(self, sql_file_path):
-        self.sql_file_path = sql_file_path
+        folder_name = re.search(r'Build(.*?)TABLE', self.__class__.__name__).group(1)
+        table_name = re.search(r'TABLE(.*)', self.__class__.__name__).group(1)
+
+  
+        self.sql_file_path = os.path.join("build_DB", folder_name+"_sql", f"{table_name}.sql")
         self.sql = self.read_sql_file()
         self.table_name = self.get_table_name()
+
+    def load_sql_path(self):
+        sql_folder = re.search(r'Build(.*?)TABLE', self.__class__.__name__).group(1)
         
     def read_sql_file(self):
         with open(self.sql_file, 'r') as file:
