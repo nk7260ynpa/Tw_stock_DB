@@ -18,13 +18,6 @@ class BaseBuildTABLE(ABC):
         with open(self.sql_file, 'r') as file:
             sql = file.read()
         return sql
-    
-    def get_table_name(self):
-        match = re.search(r'CREATE TABLE `.*?`\.`(.*?)`', self.sql)
-        if match:
-            return match.group(1)
-        else:
-            raise ValueError("Table name not found in SQL file.")
         
     def check_table_exists(self, conn):
         """
@@ -47,7 +40,7 @@ class BaseBuildTABLE(ABC):
         else:
             print(f"Table '{self.table_name}' already exists.")
 
-class BaseBuild(ABC):
+class BaseBuildDB(ABC):
     def __init__(self, typeclass, name):
         self.typeclass = typeclass
         self.name = name
@@ -65,4 +58,3 @@ class BaseBuild(ABC):
             build_obj.build(conn)
 
                
-    
