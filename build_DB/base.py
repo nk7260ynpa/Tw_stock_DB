@@ -15,7 +15,7 @@ class BaseBuildTABLE(ABC):
         self.table_name = table_name
         
     def read_sql_file(self):
-        with open(self.sql_file, 'r') as file:
+        with open(self.sql_file_path, 'r') as file:
             sql = file.read()
         return sql
         
@@ -23,7 +23,7 @@ class BaseBuildTABLE(ABC):
         """
         Check if the table already exists in the database.
         """
-        query = f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '{self.table_name}'"
+        query = text(f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '{self.table_name}'")
         result = conn.execute(query)
         count = result.fetchone()[0]
         return count > 0
@@ -40,11 +40,11 @@ class BaseBuildTABLE(ABC):
         else:
             print(f"Table '{self.table_name}' already exists.")
 
-class BaseBuildDB(ABC):
+class BaseBuild(ABC):
     def __init__(self, typeclass, name):
         self.typeclass = typeclass
         self.name = name
-        self.folder = os.path.join("build_DB", name)
+        self.folder = os.path.join("build_DB")
 
     def build_db(self, conn_server):
         sql_path = os.path.join(self.folder, f"{self.name}_sql", "db.sql")
@@ -54,7 +54,6 @@ class BaseBuildDB(ABC):
     def build_table(self, conn):
         for subclass in self.typeclass.__subclasses__():
             sql_path = os.path.join(self.folder, f"{self.name}_sql", f"{subclass.__name__}.sql")
-            build_obj = subclass(sql_path)
+            build_obj = subclass()
             build_obj.build(conn)
-
-               
+    

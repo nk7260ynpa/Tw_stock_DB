@@ -7,7 +7,7 @@ class BuildDB():
         self.db_name = self.get_db_name()
 
     def read_sql_file(self):
-        with open(self.sql_file, 'r') as file:
+        with open(self.sql_file_path, 'r') as file:
             sql = file.read()
         return sql
 
