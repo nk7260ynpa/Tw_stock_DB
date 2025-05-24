@@ -4,7 +4,39 @@ import re
 
 from sqlalchemy import text
 
-from build_DB.create_DB import BuildDB
+class BuildEmptyDB():    
+    def __init__(self, sql_file_path):
+        self.sql_file_path = sql_file_path
+        self.sql = self.read_sql_file()
+        self.db_name = self.get_db_name()
+
+    def read_sql_file(self):
+        with open(self.sql_file_path, 'r') as file:
+            sql = file.read()
+        return sql
+
+    def get_db_name(self):
+        start = self.sql.find("`") + 1
+        end = self.sql.find("`", start)
+        return self.sql[start:end]
+    
+    def check_db_exists(self, conn):
+        query = text(f"SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '{self.db_name}'")
+        results = conn.execute(query)
+        rows = results.fetchall()
+        if len(rows) > 0:
+            return True
+        else:
+            return False
+        
+    def build(self, conn_server):
+        if not self.check_db_exists(conn_server):
+            conn_server.execute(text(self.sql))
+            print(f"Database '{self.db_name}' created successfully.")
+        else:
+            print(f"Database '{self.db_name}' already exists.")
+        conn_server.close()
+
 
 class BaseBuildTABLE(ABC):
     def __init__(self):
@@ -48,7 +80,7 @@ class BaseBuild(ABC):
 
     def build_db(self, conn_server):
         sql_path = os.path.join(self.folder, f"{self.name}_sql", "db.sql")
-        build_obj = BuildDB(sql_path)
+        build_obj = BuildEmptyDB(sql_path)
         build_obj.build(conn_server)
     
     def build_table(self, conn):
