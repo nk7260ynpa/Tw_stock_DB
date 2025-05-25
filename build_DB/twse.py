@@ -30,10 +30,6 @@ class BuildTWSETABLEStockName(BuildTWSETABLE):
     
     def post_process(self, conn):
         df = pd.read_csv("build_DB/TWSE_sql/twse_code.csv")
-        # from sqlalchemy import create_engine
-        # address = "mysql+pymysql://root:stock@localhost:3306/TWSE"
-        # engine = create_engine(address)
-        # conn = engine.connect()
         df.to_sql("StockName", conn, if_exists='append', index=False, chunksize=1000)
 
 class BuildTWSETABLETranslate(BuildTWSETABLE):
