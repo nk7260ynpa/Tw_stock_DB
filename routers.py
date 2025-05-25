@@ -4,6 +4,7 @@ class MySQLRouter:
     def __init__(self, host, user, password, db_name=None):
         """
         Initialize the MySQLRouter with the given parameters.
+
         Args:
             host (str): The MySQL host.
             user (str): The MySQL user.
@@ -14,16 +15,18 @@ class MySQLRouter:
         self.user = user
         self.password = password
         self.db_name = db_name
-        self.conn = self.build_mysql_conn()
+        self.conn = self._build_mysql_conn()
     
-    def build_mysql_conn(self):
+    def _build_mysql_conn(self):
         """
         Build a MySQL connection based on the provided parameters.
+
         Args:
             self.host (str): The MySQL host.
             self.user (str): The MySQL user.
             self.password (str): The MySQL password.
             self.db_name (str, optional): The name of the database. Defaults to None.
+
         Returns:
             conn: The MySQL connection object.
         """
@@ -37,8 +40,16 @@ class MySQLRouter:
     def mysql_conn(self):
         """
         Get the MySQL connection object.
+
         Returns:
             conn: The MySQL connection object.
+
+        Example:
+        >>> Example:
+        >>> router = MySQLRouter(host, user, password, db_name)
+        >>> conn = router.mysql_conn
+        >>> conn.execute("SELECT 1")
+        >>> conn.close()
         """
         return self.conn
         

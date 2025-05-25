@@ -1,20 +1,31 @@
+import argparse
+
 import build_DB
-from router import MySQLRouter
+from routers import MySQLRouter
 
 def main(opt):
-    # 獲取所有繼承 BaseBuild 的子類別
+    HOST = opt.host
+    USER = opt.user
+    PASSWORD = opt.password
+    
     all_subclasses = build_DB.BaseBuild.__subclasses__()
+    conn_server = MySQLRouter(HOST, USER, PASSWORD).mysql_conn
 
-    host = "localhost:3306"
-    user = "root"
-    password = "stock"
-    conn_server = MySQLRouter(host, user, password).mysql_conn
-    bui = all_subclasses[0]()
-    bui.build_db(conn_server)
+    for subclass in all_subclasses:
+        build_DB_obj = subclass()
+        build_DB_obj.build_db(conn_server)
+        conn_db = MySQLRouter(HOST, USER, PASSWORD, build_DB_obj.name).mysql_conn
+        build_DB_obj.build_table(conn_db)
+        conn_db.close()
+    
     conn_server.close()
-    conn_db = MySQLRouter(host, user, password, bui.name).mysql_conn
-    bui.build_table(conn_db)
-    conn_db.close()
 
-
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Build the database and tables.")
+    parser.add_argument("--host", type=str, default="localhost:3306", help="Database host")
+    parser.add_argument("--user", type=str, default="root", help="Database user")
+    parser.add_argument("--password", type=str, default="stock", help="Database password")
+    opt = parser.parse_args()
+    
+    main()
     
