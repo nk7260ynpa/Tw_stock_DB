@@ -126,7 +126,8 @@ class BaseBuildTABLE(ABC):
         """
         if not self.check_table_exists(conn):
             conn.execute(text(self.sql))
-            self.post_process()
+            conn.commit()
+            self.post_process(conn)
             print(f"Table '{self.table_name}' created successfully.")
         else:
             print(f"Table '{self.table_name}' already exists.")
