@@ -26,6 +26,5 @@ if __name__ == "__main__":
     parser.add_argument("--user", type=str, default="root", help="Database user")
     parser.add_argument("--password", type=str, default="stock", help="Database password")
     opt = parser.parse_args()
-    
-    main()
+    main(opt)
     

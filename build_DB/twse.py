@@ -9,10 +9,28 @@ class BuildTWSETABLE(BaseBuildTABLE):
         super().__init__()
     
     def post_process(self):
-        # Add any post-processing steps here
+        """
+        No post-processing steps are defined in this class.
+        """
         pass
 
 class BuildTWSETABLEDailyPrice(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+    
+    def post_process(self):
+        # Add any post-processing steps here
+        pass
+
+class BuildTWSETABLEStockName(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+    
+    def post_process(self):
+        # Add any post-processing steps here
+        pass
+
+class BuildTWSETABLETranslate(BuildTWSETABLE):
     def __init__(self):
         super().__init__()
     
