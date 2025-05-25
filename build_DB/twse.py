@@ -31,6 +31,7 @@ class BuildTWSETABLEStockName(BuildTWSETABLE):
     def post_process(self, conn):
         df = pd.read_csv("build_DB/TWSE_sql/twse_code.csv")
         df.to_sql("StockName", conn, if_exists='append', index=False, chunksize=1000)
+        conn.commit()
 
 class BuildTWSETABLETranslate(BuildTWSETABLE):
     def __init__(self):

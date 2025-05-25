@@ -68,6 +68,7 @@ class BuildEmptyDB():
         """
         if not self.check_db_exists(conn_server):
             conn_server.execute(text(self.sql))
+            conn_server.commit()
             print(f"Database '{self.db_name}' created successfully.")
         else:
             print(f"Database '{self.db_name}' already exists.")
