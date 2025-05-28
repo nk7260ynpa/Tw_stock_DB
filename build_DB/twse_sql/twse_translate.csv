@@ -1,0 +1,17 @@
+English,Chinese
+Date,日期
+SecurityCode,證券代號
+StockName,證券名稱
+TradeVolume,成交股數
+Transaction,成交筆數
+TradeValue,成交金額
+OpeningPrice,開盤價
+HighestPrice,最高價
+LowestPrice,最低價
+ClosingPrice,收盤價
+Change,漲跌
+LastBestBidPrice,最後揭示買價
+LastBestBidVolume,最後揭示買量
+LastBestAskPrice,最後揭示賣價
+LastBestAskVolume,最後揭示賣量
+PriceEarningratio,本益比

@@ -38,5 +38,13 @@ class BuildTWSETABLETranslate(BuildTWSETABLE):
         super().__init__()
     
     def post_process(self, conn):
-        # Add any post-processing steps here
+        df = pd.read_csv("build_DB/TWSE_sql/twse_translate.csv")
+        df.to_sql("Translate", conn, if_exists='append', index=False, chunksize=1000)
+        conn.commit()
+
+class BuildTWSETABLEUploadDate(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+    
+    def post_process(self, conn):
         pass
