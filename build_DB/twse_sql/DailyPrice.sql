@@ -1,7 +1,6 @@
 CREATE TABLE `TWSE`.`DailyPrice` (
     `Date` DATE NOT NULL,
     `SecurityCode` VARCHAR(10) NOT NULL,
-    `StockName` VARCHAR(15) NOT NULL,
     `TradeVolume` BIGINT NOT NULL,
     `Transaction` INT NOT NULL,
     `TradeValue` BIGINT NOT NULL,
