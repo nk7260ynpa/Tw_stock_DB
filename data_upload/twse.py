@@ -3,6 +3,8 @@ from data_upload.base import DataUploadBase
 
 from datetime import datetime
 
+import tw_crawler
+
 class UploadType(BaseModel):
     Date: datetime
     SecurityCode: str
@@ -25,6 +27,7 @@ class Uploader(DataUploadBase):
     def __init__(self, conn):
         self.conn = conn
         self.UploadType = UploadType
+        self.crawler = tw_crawler.twse_crawler
 
     def preprocess(self, df):
         df = df.drop(columns=['StockName'])
