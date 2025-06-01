@@ -28,7 +28,12 @@ class DataUploadBase(ABC):
         df_schema = [self.UploadType(**record).__dict__ for record in df_dict]
         df = pd.DataFrame(df_schema)
         return df
-
+    
+    def check_date(self, date):
+        if self.conn.execute(text(f"SELECT COUNT(*) FROM UploadDate WHERE Date = {date}")).scalar():
+            return True
+        return False
+            
     def upload_df(self, df):
         df_copy = self.preprocess(df.copy())
         df_copy = self.check_schema(df_copy)
@@ -42,5 +47,9 @@ class DataUploadBase(ABC):
 
     def upload(self, date):
         df = self.craw_data(date)
-        self.upload_df(df)
-        self.upload_date(date)
+
+        if self.check_date(date):
+           pass
+        else:
+           self.upload_df(df)
+           self.upload_date(date)
