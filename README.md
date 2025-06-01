@@ -16,3 +16,13 @@ docker compose -f TwDatabase.yaml up -d
 # 建立TWSE資料庫
 python main.py
 ```
+
+## 啟動爬蟲 server
+```bash
+docker compose -f docker/docker-compose.yml up -d
+```
+
+## 爬蟲資料庫
+```bash
+python upload.py --date {日期}
+```
