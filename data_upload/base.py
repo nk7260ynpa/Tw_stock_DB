@@ -1,16 +1,27 @@
 from abc import ABC, abstractmethod
+import os
+import requests
 
 import pandas as pd
 from sqlalchemy import text
 
 class DataUploadBase(ABC):
     @abstractmethod
-    def __init__(self):
-        pass
+    def __init__(self, conn):
+        self.url = "http://127.0.0.1:6738"
+        self.name = os.path.basename(type(self).__module__.split('.')[-1])
+        self.conn = conn
 
     @abstractmethod
     def preprocess(self, df):
         pass
+
+    def craw_data(self, date):
+        payload = {"name": self.name, "date": date}
+        response = requests.post(self.url, params=payload)
+        json_data = response.json()["data"]
+        df = pd.read_json(json_data, orient="records")
+        return df
     
     def check_schema(self, df):
         df_dict = df.to_dict(orient='records')
@@ -30,6 +41,6 @@ class DataUploadBase(ABC):
         self.conn.commit()
 
     def upload(self, date):
-        df = self.crawler(date)
-        self.upload_df(df)
+        df = self.craw_data(date)
+        #self.upload_df(df)
         self.upload_date(date)
