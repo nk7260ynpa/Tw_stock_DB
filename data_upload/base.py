@@ -42,5 +42,5 @@ class DataUploadBase(ABC):
 
     def upload(self, date):
         df = self.craw_data(date)
-        #self.upload_df(df)
+        self.upload_df(df)
         self.upload_date(date)
