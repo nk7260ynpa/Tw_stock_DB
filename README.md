@@ -5,6 +5,7 @@
 ```bash
 # 建立 DB docker volume
 docker volume create StockDB
+docker network create db_network
 ```
 啟動 DB
 ```bash
