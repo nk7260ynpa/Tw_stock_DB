@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  tw_stocker_crawler:
+    image: nk7260ynpa/tw_stocker_crawler:latest
+    container_name: tw_stocker_crawler
+    ports:
+      - "6738:6738"
+    restart: "always"
