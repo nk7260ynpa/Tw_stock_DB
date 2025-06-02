@@ -22,9 +22,10 @@ class UploadType(BaseModel):
 
 
 class Uploader(DataUploadBase):
-    def __init__(self, conn):
+    def __init__(self, conn, host):
         super().__init__(conn)
         self.UploadType = UploadType
+        self.url = f"http://{host}"
 
     def preprocess(self, df):
         df = df.drop(columns=['StockName'])

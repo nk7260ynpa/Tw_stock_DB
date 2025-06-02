@@ -8,7 +8,6 @@ from sqlalchemy import text
 class DataUploadBase(ABC):
     @abstractmethod
     def __init__(self, conn):
-        self.url = "http://127.0.0.1:6738"
         self.name = os.path.basename(type(self).__module__.split('.')[-1])
         self.conn = conn
 
