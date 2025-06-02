@@ -30,7 +30,7 @@ class DataUploadBase(ABC):
         return df
     
     def check_date(self, date):
-        if self.conn.execute(text(f"SELECT COUNT(*) FROM UploadDate WHERE Date = {date}")).scalar():
+        if self.conn.execute(text(f"SELECT COUNT(*) FROM UploadDate WHERE Date = '{date}'")).scalar():
             return True
         return False
             
@@ -47,7 +47,6 @@ class DataUploadBase(ABC):
 
     def upload(self, date):
         df = self.craw_data(date)
-
         if self.check_date(date):
            pass
         else:
