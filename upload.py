@@ -14,7 +14,8 @@ def main(opt):
 
     uploader = data_upload.__dict__[package_name].Uploader(conn)
     uploader.upload(opt.date)
-
+    conn.close()
+    
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Upload data to MySQL database.")
     parser.add_argument("--date", type=str, required=True, help="Date in YYYY-MM-DD format")
