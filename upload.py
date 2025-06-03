@@ -36,7 +36,7 @@ if __name__ == "__main__":
     parser.add_argument("--user", type=str, default="root", help="MySQL user")
     parser.add_argument("--password", type=str, default="stock", help="MySQL password")
     parser.add_argument("--dbname", type=str, default="TWSE", help="MySQL database name")
-    parser.add_argument("--crawlerhost", type=str, default="http://127.0.0.1:6738", 
+    parser.add_argument("--crawlerhost", type=str, default="127.0.0.1:6738", 
                         help="Package name for data upload")
     opt = parser.parse_args()
     
