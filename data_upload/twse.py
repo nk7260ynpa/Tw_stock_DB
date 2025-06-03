@@ -1,7 +1,7 @@
 from pydantic import BaseModel
-from data_upload.base import DataUploadBase
-
 from datetime import datetime
+
+from data_upload.base import DataUploadBase
 
 class UploadType(BaseModel):
     Date: datetime

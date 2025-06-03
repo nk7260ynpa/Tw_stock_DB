@@ -1,10 +1,10 @@
-import upload
+import time
 import datetime
 
 from easydict import EasyDict 
 import schedule
-import time
 
+import upload
 
 def main():
     DATE = datetime.datetime.now().strftime("%Y-%m-%d")

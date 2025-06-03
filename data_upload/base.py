@@ -1,6 +1,6 @@
-from abc import ABC, abstractmethod
 import os
 import requests
+from abc import ABC, abstractmethod
 
 import pandas as pd
 from sqlalchemy import text

@@ -1,7 +1,7 @@
+import argparse
+
 import data_upload
 from routers import MySQLRouter
-
-import argparse
 
 def main(opt):
     HOST = opt.host
