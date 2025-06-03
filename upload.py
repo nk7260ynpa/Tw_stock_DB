@@ -4,6 +4,18 @@ import data_upload
 from routers import MySQLRouter
 
 def main(opt):
+    """
+    Main function to upload data to MySQL database.
+    Args:
+        opt (argparse.Namespace): Command line arguments 
+        with the following attributes:
+            - date (str): Date in YYYY-MM-DD format
+            - host (str): MySQL host
+            - user (str): MySQL user
+            - password (str): MySQL password
+            - dbname (str): MySQL database name
+            - crawlerhost (str): Package name for data upload
+    """
     HOST = opt.host
     USER = opt.user
     PASSWORD = opt.password

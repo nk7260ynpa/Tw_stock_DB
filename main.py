@@ -4,6 +4,15 @@ import build_DB
 from routers import MySQLRouter
 
 def main(opt):
+    """
+    Main function to build the database and tables.
+    Args:
+        opt (argparse.Namespace): Command line arguments 
+        with the following attributes:
+            - host (str): MySQL host
+            - user (str): MySQL user
+            - password (str): MySQL password
+    """
     HOST = opt.host
     USER = opt.user
     PASSWORD = opt.password

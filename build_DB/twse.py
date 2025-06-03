@@ -29,6 +29,12 @@ class BuildTWSETABLEStockName(BuildTWSETABLE):
         super().__init__()
     
     def post_process(self, conn):
+        """
+        Upload the Security Code data match StockName table.
+
+        Args:
+            conn: Database connection object.
+        """
         df = pd.read_csv("build_DB/TWSE_sql/twse_code.csv")
         df.to_sql("StockName", conn, if_exists='append', index=False, chunksize=1000)
         conn.commit()
@@ -38,6 +44,12 @@ class BuildTWSETABLETranslate(BuildTWSETABLE):
         super().__init__()
     
     def post_process(self, conn):
+        """
+        Upload the translation column data match Translate table.
+        
+        Args:
+            conn: Database connection object.
+        """
         df = pd.read_csv("build_DB/TWSE_sql/twse_translate.csv")
         df.to_sql("Translate", conn, if_exists='append', index=False, chunksize=1000)
         conn.commit()
