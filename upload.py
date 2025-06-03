@@ -1,7 +1,16 @@
 import argparse
+import logging
 
 import data_upload
 from routers import MySQLRouter
+
+log_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+log_handler = logging.FileHandler("upload.log")
+log_handler.setFormatter(log_formatter)
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logger.addHandler(log_handler)
 
 def main(opt):
     """
@@ -22,12 +31,17 @@ def main(opt):
     DBNAME = opt.dbname
     CRAWLERHOST = opt.crawlerhost
     
+    logger.info(f"Connecting to MySQL database {DBNAME} at {HOST} with user {USER}")
     conn = MySQLRouter(HOST, USER, PASSWORD, DBNAME).mysql_conn
     package_name = DBNAME.lower()
 
+    logger.info(f"Uploading data for package: {package_name} on date: {opt.date}")
     uploader = data_upload.__dict__[package_name].Uploader(conn, CRAWLERHOST)
     uploader.upload(opt.date)
     conn.close()
+
+    logger.info("All data uploaded successfully.")
+
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Upload data to MySQL database.")

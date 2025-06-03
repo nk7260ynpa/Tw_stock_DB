@@ -3,6 +3,10 @@ from datetime import datetime
 
 from data_upload.base import DataUploadBase
 
+
+import logging
+logger = logging.getLogger(__name__)
+
 class UploadType(BaseModel):
     Date: datetime
     SecurityCode: str

@@ -5,6 +5,9 @@ from abc import ABC, abstractmethod
 import pandas as pd
 from sqlalchemy import text
 
+import logging
+logger = logging.getLogger(__name__)
+
 class DataUploadBase(ABC):
     @abstractmethod
     def __init__(self, conn):
@@ -103,7 +106,9 @@ class DataUploadBase(ABC):
         """
         df = self.craw_data(date)
         if self.check_date(date):
+           logger.info(f"Data for {date} already exists in the database. Skipping upload.")
            pass
         else:
            self.upload_df(df)
            self.upload_date(date)
+        logger.info(f"Data for {date} uploaded successfully to the database.")
