@@ -1,2 +1,8 @@
 mysql-connector-python
 pymysql
+easydict
+schedule
+pydantic
+requests
+pandas
+sqlalchemy

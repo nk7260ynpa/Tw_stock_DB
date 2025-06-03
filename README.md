@@ -5,6 +5,7 @@
 ```bash
 # 建立 DB docker volume
 docker volume create StockDB
+docker network create db_network
 ```
 啟動 DB
 ```bash
@@ -15,4 +16,14 @@ docker compose -f TwDatabase.yaml up -d
 ```bash
 # 建立TWSE資料庫
 python main.py
+```
+
+## 啟動爬蟲 server
+```bash
+docker compose -f docker/docker-compose.yml up -d
+```
+
+## 爬蟲資料庫
+```bash
+python upload.py --date {日期}
 ```
