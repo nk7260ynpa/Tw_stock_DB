@@ -24,7 +24,7 @@ def main():
 
 if __name__ == "__main__":
     # Schedule the task to run daily at 3:00 AM
-    schedule.every().day.at("16:31").do(main)
+    schedule.every().day.at("16:13").do(main)
 
     # Keep the script running to execute the scheduled task
     while True:
