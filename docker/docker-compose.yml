@@ -4,11 +4,18 @@ services:
   tw_stocker_crawler:
     image: nk7260ynpa/tw_stocker_crawler:latest
     container_name: tw_stocker_crawler
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.twstocker.rule=Host(`twstocker.localhost`)"
+      - "traefik.http.routers.twstocker.entrypoints=web"
+      - "traefik.http.services.twstocker.loadbalancer.server.port=8000"
     ports:
       - "6738:6738"
     restart: "always"
     networks:
         - db_network
+    expose:
+      - "8000"
   
   tw_stocker_daily_process:
     image: nk7260ynpa/tw_stocker_daily_process:latest
