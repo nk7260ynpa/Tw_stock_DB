@@ -23,7 +23,6 @@ class TestBuildEmptyDB:
         db_name = build_db.get_db_name()
         assert db_name == "BASE"
 
-
     def test_check_db_exists(self, build_db, mocker):
         # Mock the connection object
         mock_conn = mocker.Mock()
