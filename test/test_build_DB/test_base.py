@@ -5,7 +5,7 @@ import tempfile
 
 from sqlalchemy import create_engine
 
-from build_DB.base import BuildEmptyDB, BaseBuildTABLE
+from build_DB.base import BuildEmptyDB, BaseBuildTABLE, BaseBuild
 
 @pytest.fixture
 def build_db():
@@ -148,3 +148,17 @@ class TestBaseBuildTABLE:
 
         mocker.patch.object(build_temp_table, 'check_table_exists', return_value=True)
         build_temp_table.build(mocker_conn_server)
+
+@pytest.fixture
+def build_temp(mocker):
+    mocker_typeclass = mocker.Mock()
+    name = "TEMP"
+    return BaseBuild(mocker_typeclass, name)
+
+class TestBaseBuild:
+    def test_build_db(self, build_temp, mocker):
+        mocker_conn_server = mocker.Mock()
+        mock_build_empty_db = mocker.Mock()
+        mock_build_empty_db.build.return_value = None
+        mocker.patch('build_DB.base.BuildEmptyDB', return_value=mock_build_empty_db)
+        build_temp.build_db(mocker_conn_server)
