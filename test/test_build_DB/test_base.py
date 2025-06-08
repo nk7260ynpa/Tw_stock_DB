@@ -54,3 +54,23 @@ class TestBuildEmptyDB:
         # Assert that the database does not exist
         assert exists is False
 
+    def test_build_pass(self, build_db, mocker):
+        mocker_conn_server = mocker.Mock()
+        mocker_conn_server.execute.return_value = None
+        mocker_conn_server.commit.return_value = None
+        mocker_conn_server.close.return_value = None
+
+        mocker.patch.object(build_db, 'check_db_exists', return_value=False)
+        build_db.build(mocker_conn_server)
+
+    def test_build_fail(self, build_db, mocker):
+        mocker_conn_server = mocker.Mock()
+        mocker_conn_server.execute.return_value = None
+        mocker_conn_server.commit.return_value = None
+        mocker_conn_server.close.return_value = None
+
+        mocker.patch.object(build_db, 'check_db_exists', return_value=True)
+        build_db.build(mocker_conn_server)
+
+        
+
