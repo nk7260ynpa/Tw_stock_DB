@@ -1,0 +1,20 @@
+CREATE TABLE `PEX`.`DailyPrice` (
+    `Date` DATE NOT NULL,
+    `Code` VARCHAR(10) NOT NULL,
+    `Close` DECIMAL(7,2) NOT NULL,
+    `Change` DECIMAL(7,2) NOT NULL,
+    `Open` DECIMAL(7,2) NOT NULL,
+    `High` DECIMAL(7,2) NOT NULL,
+    `Low` DECIMAL(7,2) NOT NULL,
+    `TradeVol(shares)` DECIMAL(7,2) NOT NULL,
+    `TradeAmt.(NTD)` DECIMAL(7,2) NOT NULL,
+    `No.ofTransactions` DECIMAL(7,2) NOT NULL,
+    `LastBestBidPrice` DECIMAL(7,2) NOT NULL,
+    `LastBestBidVolume` INT NOT NULL,
+    `LastBestAskPrice` DECIMAL(7,2) NOT NULL,
+    `LastBestAskVolume` INT NOT NULL,
+    `IssuedShares` DECIMAL(7,2) NOT NULL,
+    `NextDayUpLimitPrice` DECIMAL(7,2) NOT NULL,
+    `NextDayDownLimitPrice` DECIMAL(7,2) NOT NULL,
+    PRIMARY KEY (`Date`, `Code`)
+)
