@@ -16,3 +16,10 @@ class BuildTPEXTABLE(BaseBuildTABLE):
         """
         pass
 
+class BuildTWSETABLEDailyPrice(BuildTPEXTABLE):
+    def __init__(self):
+        super().__init__()
+    
+    def post_process(self, conn):
+        # Add any post-processing steps here
+        pass
