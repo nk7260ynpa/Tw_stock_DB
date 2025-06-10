@@ -72,7 +72,6 @@ class BuildEmptyDB():
             print(f"Database '{self.db_name}' created successfully.")
         else:
             print(f"Database '{self.db_name}' already exists.")
-        conn_server.close()
 
 
 class BaseBuildTABLE(ABC):
@@ -106,7 +105,11 @@ class BaseBuildTABLE(ABC):
         Args:
             conn: The database connection object.
         """
-        query = text(f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '{self.table_name}'")
+        query = text(f"""
+                     SELECT COUNT(*) 
+                     FROM information_schema.tables 
+                     WHERE table_schema = DATABASE() AND table_name = '{self.table_name}'
+                     """)
         result = conn.execute(query)
         count = result.fetchone()[0]
         return count > 0

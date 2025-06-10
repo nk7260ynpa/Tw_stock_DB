@@ -16,7 +16,7 @@ class BuildTPEXTABLE(BaseBuildTABLE):
         """
         pass
 
-class BuildTWSETABLEDailyPrice(BuildTPEXTABLE):
+class BuildTPEXTABLEDailyPrice(BuildTPEXTABLE):
     def __init__(self):
         super().__init__()
     
@@ -24,7 +24,7 @@ class BuildTWSETABLEDailyPrice(BuildTPEXTABLE):
         # Add any post-processing steps here
         pass
 
-class BuildTWSETABLEStockName(BuildTPEXTABLE):
+class BuildTPEXTABLEStockName(BuildTPEXTABLE):
     def __init__(self):
         super().__init__()
     
@@ -39,7 +39,7 @@ class BuildTWSETABLEStockName(BuildTPEXTABLE):
         df.to_sql("StockName", conn, if_exists='append', index=False, chunksize=1000)
         conn.commit()
 
-class BuildTWSETABLETranslate(BuildTPEXTABLE):
+class BuildTPEXTABLETranslate(BuildTPEXTABLE):
     def __init__(self):
         super().__init__()
     
@@ -50,11 +50,11 @@ class BuildTWSETABLETranslate(BuildTPEXTABLE):
         Args:
             conn: Database connection object.
         """
-        df = pd.read_csv("build_DB/TWSE_sql/tpex_translate.csv")
+        df = pd.read_csv("build_DB/TPEX_sql/tpex_translate.csv")
         df.to_sql("Translate", conn, if_exists='append', index=False, chunksize=1000)
         conn.commit()
 
-class BuildTWSETABLEUploadDate(BuildTPEXTABLE):
+class BuildTPEXTABLEUploadDate(BuildTPEXTABLE):
     def __init__(self):
         super().__init__()
     
