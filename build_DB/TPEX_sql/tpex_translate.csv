@@ -7,9 +7,9 @@ Change,漲跌
 Open,開盤
 High,最高
 Low,最低
-TradeVol(shares),成交股數
-TradeAmt.(NTD),成交金額(元)
-No.ofTransactions,成交筆數
+TradeVolume,成交股數
+TradeAmount,成交金額(元)
+NumberOfTransactions,成交筆數
 LastBestBidPrice,最後買價
 LastBidVolume,最後買量(張數)
 LastBestAskPrice,最後賣價

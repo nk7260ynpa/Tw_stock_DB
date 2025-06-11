@@ -6,7 +6,7 @@ import schedule
 
 import upload
 
-def main():
+def twse_daily_craw():
     """
     Daily Request Crawler and Upload Data to MySQL Database
     """
@@ -24,9 +24,28 @@ def main():
                     "crawlerhost": CRAWLERHOST})
     upload.main(opt)
 
+def tpex_daily_craw():
+    """
+    Daily Request Crawler and Upload Data to MySQL Database
+    """
+    DATE = datetime.datetime.now().strftime("%Y-%m-%d")
+    HOST = "tw_stock_database:3306"
+    USER = "root"
+    PASSWORD = "stock"
+    DBNAME = "TPEX"
+    CRAWLERHOST = "tw_stocker_crawler:6738"
+    opt = EasyDict({"date": DATE, 
+                    "host": HOST, 
+                    "user": USER, 
+                    "password": PASSWORD, 
+                    "dbname": DBNAME, 
+                    "crawlerhost": CRAWLERHOST})
+    upload.main(opt)
+
 
 if __name__ == "__main__":
-    schedule.every().day.at("16:13").do(main)
+    schedule.every().day.at("16:13").do(twse_daily_craw)
+    schedule.every().day.at("16:17").do(tpex_daily_craw)
 
     while True:
         schedule.run_pending()
