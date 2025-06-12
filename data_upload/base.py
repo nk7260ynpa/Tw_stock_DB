@@ -98,17 +98,17 @@ class DataUploadBase(ABC):
 
     def upload(self, date):
         """
-        Upload data to the database for a specific date.
         If data for the date already exists, it skips the upload.
+        Otherwise, it crawls the data and uploads it to the database.
 
         Args:
             date (str): Date in YYYY-MM-DD format.
         """
-        df = self.craw_data(date)
         if self.check_date(date):
            logger.info(f"Data for {date} already exists in the database. Skipping upload.")
            pass
         else:
+           df = self.craw_data(date)
            self.upload_df(df)
            self.upload_date(date)
         logger.info(f"Data for {date} uploaded successfully to the database.")
