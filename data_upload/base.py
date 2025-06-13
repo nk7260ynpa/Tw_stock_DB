@@ -85,16 +85,21 @@ class DataUploadBase(ABC):
         df_copy.to_sql("DailyPrice", self.conn, if_exists='append', index=False, chunksize=1000)
         self.conn.commit()
 
-    def upload_date(self, date):
+    def upload_date(self, date, df):
         """
         Upload the date to the UploadDate table.
         
         Args:
             date (str): Date in YYYY-MM-DD format.
         """
-        update = text(f"INSERT INTO UploadDate (Date) VALUES ('{date}');")
-        self.conn.execute(update)
-        self.conn.commit()
+        if df.shape[0] != 0:
+            update = text(f"INSERT INTO UploadDate (Date, Open) VALUES ('{date}', True);")
+            self.conn.execute(update)
+            self.conn.commit()
+        else:
+            update = text(f"INSERT INTO UploadDate (Date, Open) VALUES ('{date}', False);")
+            self.conn.execute(update)
+            self.conn.commit()
 
     def upload(self, date):
         """
@@ -110,5 +115,5 @@ class DataUploadBase(ABC):
         else:
            df = self.craw_data(date)
            self.upload_df(df)
-           self.upload_date(date)
+           self.upload_date(date, df)
         logger.info(f"Data for {date} uploaded successfully to the database.")
