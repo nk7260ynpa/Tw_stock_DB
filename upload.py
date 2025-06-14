@@ -1,8 +1,12 @@
 import argparse
 import logging
 
+from datetime import datetime, timedelta
+
 import data_upload
 from routers import MySQLRouter
+import random
+import time
 
 log_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 log_handler = logging.FileHandler("upload.log")
@@ -12,7 +16,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(log_handler)
 
-def main(opt):
+def day_upload(date, opt):
     """
     Main function to upload data to MySQL database.
     Args:
@@ -35,17 +39,46 @@ def main(opt):
     conn = MySQLRouter(HOST, USER, PASSWORD, DBNAME).mysql_conn
     package_name = DBNAME.lower()
 
-    logger.info(f"Uploading data for package: {package_name} on date: {opt.date}")
+    logger.info(f"Uploading data for package: {package_name} on date: {date}")
     uploader = data_upload.__dict__[package_name].Uploader(conn, CRAWLERHOST)
-    uploader.upload(opt.date)
+    uploader.upload(date)
     conn.close()
 
     logger.info("All data uploaded successfully.")
 
+def main(opt):
+    """
+    Main function to handle command line arguments and call the upload function.
+    Args:
+        opt (argparse.Namespace): Command line arguments
+    """
+    if not opt.end_date:
+        opt.end_date = opt.start_date
+
+    start_date = opt.start_date
+    end_date = opt.end_date
+
+    logger.info(f"Starting upload from {start_date} to {end_date}")
+    
+    start_dt = datetime.strptime(start_date, "%Y-%m-%d")
+    end_dt = datetime.strptime(end_date, "%Y-%m-%d")
+
+    # Loop through each date in the range
+    current_dt = start_dt
+    while current_dt <= end_dt:
+        # Randomly pause for 3 to 15 seconds
+        pause_duration = random.uniform(3, 15)
+        logger.info(f"Pausing for {pause_duration} seconds before processing date: {current_dt.strftime('%Y-%m-%d')}")
+        time.sleep(pause_duration)
+        date_str = current_dt.strftime("%Y-%m-%d")
+        day_upload(date_str, opt)
+        current_dt += timedelta(days=1)
+
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Upload data to MySQL database.")
-    parser.add_argument("--date", type=str, required=True, help="Date in YYYY-MM-DD format")
+    parser.add_argument("--start_date", type=str, required=True, help="Date in YYYY-MM-DD format")
+    parser.add_argument("--end_date", type=str, default="", help="Date in YYYY-MM-DD format")
     parser.add_argument("--host", type=str, default="localhost:3306", help="MySQL host")
     parser.add_argument("--user", type=str, default="root", help="MySQL user")
     parser.add_argument("--password", type=str, default="stock", help="MySQL password")

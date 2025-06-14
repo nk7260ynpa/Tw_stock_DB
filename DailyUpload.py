@@ -16,13 +16,12 @@ def twse_daily_craw():
     PASSWORD = "stock"
     DBNAME = "TWSE"
     CRAWLERHOST = "tw_stocker_crawler:6738"
-    opt = EasyDict({"date": DATE, 
-                    "host": HOST, 
+    opt = EasyDict({"host": HOST, 
                     "user": USER, 
                     "password": PASSWORD, 
                     "dbname": DBNAME, 
                     "crawlerhost": CRAWLERHOST})
-    upload.main(opt)
+    upload.day_upload("2024-06-14", opt)
 
 def tpex_daily_craw():
     """
@@ -34,18 +33,17 @@ def tpex_daily_craw():
     PASSWORD = "stock"
     DBNAME = "TPEX"
     CRAWLERHOST = "tw_stocker_crawler:6738"
-    opt = EasyDict({"date": DATE, 
-                    "host": HOST, 
+    opt = EasyDict({"host": HOST, 
                     "user": USER, 
                     "password": PASSWORD, 
                     "dbname": DBNAME, 
                     "crawlerhost": CRAWLERHOST})
-    upload.main(opt)
+    upload.day_upload("2024-06-14", opt)
 
 
 if __name__ == "__main__":
-    schedule.every().day.at("16:13").do(twse_daily_craw)
-    schedule.every().day.at("16:17").do(tpex_daily_craw)
+    schedule.every().day.at("18:40").do(twse_daily_craw)
+    schedule.every().day.at("18:48").do(tpex_daily_craw)
 
     while True:
         schedule.run_pending()
