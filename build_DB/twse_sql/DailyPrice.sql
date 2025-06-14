@@ -10,9 +10,9 @@ CREATE TABLE `TWSE`.`DailyPrice` (
     `ClosingPrice` DECIMAL(7,2) NOT NULL,
     `Change` DECIMAL(7,2) NOT NULL,
     `LastBestBidPrice` DECIMAL(7,2) NOT NULL,
-    `LastBestBidVolume` INT NOT NULL,
+    `LastBestBidVolume` BIGINT NOT NULL,
     `LastBestAskPrice` DECIMAL(7,2) NOT NULL,
-    `LastBestAskVolume` INT NOT NULL,
+    `LastBestAskVolume` BIGINT NOT NULL,
     `PriceEarningratio` DECIMAL(7,2) NOT NULL,
     PRIMARY KEY (`Date`, `SecurityCode`)
 )
