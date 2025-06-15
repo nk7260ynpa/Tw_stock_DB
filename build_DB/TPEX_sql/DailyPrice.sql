@@ -10,7 +10,7 @@ CREATE TABLE `TPEX`.`DailyPrice` (
     `TradeAmount` BIGINT,
     `NumberOfTransactions` INT,
     `LastBestBidPrice` DECIMAL(7,2),
-    `LastBidVolume` DECIMAL(7,2),
+    `LastBidVolume` DECIMAL(9,2),
     `LastBestAskPrice` DECIMAL(7,2),
     `LastBestAskVolume` INT,
     `IssuedShares` BIGINT,
