@@ -31,6 +31,7 @@ def daily_craw(db_name):
 if __name__ == "__main__":
     schedule.every().day.at("16:10").do(daily_craw, "TWSE")
     schedule.every().day.at("16:18").do(daily_craw, "TPEX")
+    schedule.every().day.at("16:23").do(daily_craw, "TAIFEX")
 
     while True:
         schedule.run_pending()
