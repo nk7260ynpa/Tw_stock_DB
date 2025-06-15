@@ -1,0 +1,21 @@
+CREATE TABLE `TWSE`.`DailyPrice` (
+    `Date` DATE NOT NULL,
+    `Contract` VARCHAR(8) NOT NULL,
+    `ContractMonth` VARCHAR(16) NOT NULL,
+    `Open` DECIMAL(7,2),
+    `High` DECIMAL(7,2),
+    `Low` DECIMAL(7,2),
+    `Last` DECIMAL(7,2),
+    `Change` DECIMAL(7,2),
+    `ChangePercent` DECIMAL(7,5),
+    `Volume` INT,
+    `SettlementPrice` DECIMAL(7,2),
+    `OpenInterest` DECIMAL(7,2),
+    `BestBid` DECIMAL(7,2),
+    `BestAsk` DECIMAL(7,2),
+    `HistoricalHigh` DECIMAL(7,2),
+    `HistoricalLow` DECIMAL(7,2),
+    `TradingHalt` DECIMAL(7,2),
+    `TradingSession` VARCHAR(6),
+    `SpreadOrderVolume` DECIMAL(7,2)
+)
