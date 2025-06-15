@@ -1,7 +1,7 @@
 CREATE TABLE `TAIFEX`.`DailyPrice` (
     `Date` DATE NOT NULL,
     `Contract` VARCHAR(8) NOT NULL,
-    `ContractMonth` VARCHAR(16) NOT NULL,
+    `ContractMonth` VARCHAR(20) NOT NULL,
     `Open` DECIMAL(7,2),
     `High` DECIMAL(7,2),
     `Low` DECIMAL(7,2),
