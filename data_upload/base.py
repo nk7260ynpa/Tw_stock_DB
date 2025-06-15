@@ -116,4 +116,4 @@ class DataUploadBase(ABC):
            df = self.craw_data(date)
            self.upload_df(df)
            self.upload_date(date, df)
-        logger.info(f"Data for {date} uploaded successfully to the database.")
+           logger.info(f"Data for {date} uploaded successfully to the database.")
