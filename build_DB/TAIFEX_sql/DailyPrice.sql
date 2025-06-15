@@ -1,4 +1,4 @@
-CREATE TABLE `TWSE`.`DailyPrice` (
+CREATE TABLE `TAIFEX`.`DailyPrice` (
     `Date` DATE NOT NULL,
     `Contract` VARCHAR(8) NOT NULL,
     `ContractMonth` VARCHAR(16) NOT NULL,
