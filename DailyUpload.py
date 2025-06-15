@@ -1,4 +1,5 @@
 import time
+import random
 import datetime
 
 from easydict import EasyDict 
@@ -6,44 +7,30 @@ import schedule
 
 import upload
 
-def twse_daily_craw():
+def daily_craw(db_name):
     """
     Daily Request Crawler and Upload Data to MySQL Database
     """
-    DATE = datetime.datetime.now().strftime("%Y-%m-%d")
     HOST = "tw_stock_database:3306"
     USER = "root"
     PASSWORD = "stock"
-    DBNAME = "TWSE"
+    DBNAME = db_name
     CRAWLERHOST = "tw_stocker_crawler:6738"
     opt = EasyDict({"host": HOST, 
                     "user": USER, 
                     "password": PASSWORD, 
                     "dbname": DBNAME, 
                     "crawlerhost": CRAWLERHOST})
-    upload.day_upload(DATE, opt)
-
-def tpex_daily_craw():
-    """
-    Daily Request Crawler and Upload Data to MySQL Database
-    """
-    DATE = datetime.datetime.now().strftime("%Y-%m-%d")
-    HOST = "tw_stock_database:3306"
-    USER = "root"
-    PASSWORD = "stock"
-    DBNAME = "TPEX"
-    CRAWLERHOST = "tw_stocker_crawler:6738"
-    opt = EasyDict({"host": HOST, 
-                    "user": USER, 
-                    "password": PASSWORD, 
-                    "dbname": DBNAME, 
-                    "crawlerhost": CRAWLERHOST})
-    upload.day_upload(DATE, opt)
-
+    
+    date_list = [(datetime.datetime.now() - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7)]
+    for date in date_list:
+        pause_duration = random.uniform(3, 15)
+        time.sleep(pause_duration)
+        upload.day_upload(date, opt)
 
 if __name__ == "__main__":
-    schedule.every().day.at("16:13").do(twse_daily_craw)
-    schedule.every().day.at("16:18").do(tpex_daily_craw)
+    schedule.every().day.at("16:10").do(daily_craw, "TWSE")
+    schedule.every().day.at("16:18").do(daily_craw, "TPEX")
 
     while True:
         schedule.run_pending()
