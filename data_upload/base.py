@@ -1,11 +1,11 @@
 import os
+import logging
 import requests
 from abc import ABC, abstractmethod
 
 import pandas as pd
 from sqlalchemy import text
 
-import logging
 logger = logging.getLogger(__name__)
 
 class DataUploadBase(ABC):

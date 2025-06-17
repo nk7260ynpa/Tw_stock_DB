@@ -1,10 +1,10 @@
+import logging
+
 from pydantic import BaseModel
 from datetime import datetime
 
 from data_upload.base import DataUploadBase
 
-
-import logging
 logger = logging.getLogger(__name__)
 
 class UploadType(BaseModel):
@@ -23,7 +23,6 @@ class UploadType(BaseModel):
     LastBestAskPrice: float
     LastBestAskVolume: int
     PriceEarningratio: float
-
 
 class Uploader(DataUploadBase):
     def __init__(self, conn, host):
@@ -50,4 +49,3 @@ class Uploader(DataUploadBase):
         """
         df = df.drop(columns=['StockName'])
         return df
-    

@@ -1,3 +1,5 @@
+import time
+import random
 import argparse
 import logging
 
@@ -5,8 +7,6 @@ from datetime import datetime, timedelta
 
 import data_upload
 from routers import MySQLRouter
-import random
-import time
 
 log_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 log_handler = logging.FileHandler("upload.log")
