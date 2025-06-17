@@ -21,7 +21,6 @@ class BuildTPEXTABLEDailyPrice(BuildTPEXTABLE):
         super().__init__()
     
     def post_process(self, conn):
-        # Add any post-processing steps here
         pass
 
 class BuildTPEXTABLEStockName(BuildTPEXTABLE):
