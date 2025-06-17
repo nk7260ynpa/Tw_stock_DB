@@ -10,6 +10,10 @@ import upload
 def daily_craw(db_name):
     """
     Daily Request Crawler and Upload Data to MySQL Database
+    
+    Args:
+        db_name (str): Name of the database to upload data to. 
+                       Options are "TWSE", "TPEX", or "TAIFEX".
     """
     HOST = "tw_stock_database:3306"
     USER = "root"
