@@ -52,3 +52,10 @@ class BuildFAOITABLETranslate(BuildFAOITABLE):
         df = pd.read_csv("build_DB/FAOI_sql/faoi_translate.csv")
         df.to_sql("Translate", conn, if_exists='append', index=False, chunksize=1000)
         conn.commit()
+
+class BuildFAOITABLEUploadDate(BuildFAOITABLE):
+    def __init__(self):
+        super().__init__()
+    
+    def post_process(self, conn):
+        pass
