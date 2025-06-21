@@ -82,8 +82,8 @@ if __name__ == "__main__":
     parser.add_argument("--host", type=str, default="localhost:3306", help="MySQL host")
     parser.add_argument("--user", type=str, default="root", help="MySQL user")
     parser.add_argument("--password", type=str, default="stock", help="MySQL password")
-    parser.add_argument("--dbname", type=str, choices=["TWSE", "TPEX", "TAIFEX"], default="TWSE", 
-                        help="MySQL database name (choose between 'TWSE' and 'TPEX' and 'TAIFEX')")
+    parser.add_argument("--dbname", type=str, choices=["TWSE", "TPEX", "TAIFEX", "FAOI"], default="TWSE", 
+                        help="MySQL database name (choose between 'TWSE' and 'TPEX' and 'TAIFEX' and 'FAOI')")
     parser.add_argument("--crawlerhost", type=str, default="127.0.0.1:6738", 
                         help="Package name for data upload")
     opt = parser.parse_args()
