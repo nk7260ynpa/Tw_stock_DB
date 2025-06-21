@@ -2,7 +2,7 @@ import pandas as pd
 
 from build_DB.base import BaseBuild, BaseBuildTABLE
 
-class BuildTWSE(BaseBuild):
+class BuildFAOI(BaseBuild):
     def __init__(self):
         super().__init__(BuildFAOITABLE, "FAOI")
     
