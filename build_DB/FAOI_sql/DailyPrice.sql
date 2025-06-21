@@ -1,0 +1,21 @@
+CREATE TABLE `FAOI`.`DailyPrice` (
+    `Date` DATE NOT NULL,
+    `SecurityCode` VARCHAR(10) NOT NULL,
+    `ForeignInvestorsTotalBuy` INT,
+    `ForeignInvestorsTotalSell` INT,
+    `ForeignInvestorsDifference` INT,
+    `ForeignDealersTotalBuy` INT,
+    `ForeignDealersTotalSell` INT,
+    `ForeignDealersDifference` INT,
+    `SecuritiesInvestmentTotalBuy` INT,
+    `SecuritiesInvestmentTotalSell` INT,
+    `SecuritiesInvestmentDifference` INT,
+    `DealersDifference` INT,
+    `DealersProprietaryTotalBuy` INT,
+    `DealersProprietaryTotalSell` INT,
+    `DealersProprietaryDifference` INT,
+    `DealersHedgeTotalBuy` INT,
+    `DealersHedgeTotalSell` INT,
+    `DealersHedgeDifference` INT,
+    `TotalDifference` INT
+)

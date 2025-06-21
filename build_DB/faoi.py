@@ -15,3 +15,10 @@ class BuildFAOITABLE(BaseBuildTABLE):
         No post-processing steps are defined in this class.
         """
         pass
+
+class BuildFAOITABLEDailyPrice(BuildFAOITABLE):
+    def __init__(self):
+        super().__init__()
+    
+    def post_process(self, conn):
+        pass
