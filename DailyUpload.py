@@ -13,7 +13,8 @@ def daily_craw(db_name):
     
     Args:
         db_name (str): Name of the database to upload data to. 
-                       Options are "TWSE", "TPEX", or "TAIFEX".
+                       Options are "TWSE", "TPEX", "TAIFEX"
+                       or "FAOI".
     """
     HOST = "tw_stock_database:3306"
     USER = "root"
@@ -36,6 +37,7 @@ if __name__ == "__main__":
     schedule.every().day.at("16:10").do(daily_craw, "TWSE")
     schedule.every().day.at("16:18").do(daily_craw, "TPEX")
     schedule.every().day.at("16:23").do(daily_craw, "TAIFEX")
+    schedule.every().day.at("16:33").do(daily_craw, "FAOI")
 
     while True:
         schedule.run_pending()
