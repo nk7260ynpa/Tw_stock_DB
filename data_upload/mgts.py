@@ -28,7 +28,7 @@ class UploadType(BaseModel):
 class Uploader(DataUploadBase):
     def __init__(self, conn, host):
         """
-        Uploader class for uploading data to the FAOI database.
+        Uploader class for uploading data to the MGTS database.
         
         Args:
             conn: Database connection object.
