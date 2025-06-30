@@ -1,4 +1,4 @@
-CREATE TABLE `MGST`.`DailyPrice` (
+CREATE TABLE `MGTS`.`DailyPrice` (
     `Date` DATE NOT NULL,
     `SecurityCode` VARCHAR(10) NOT NULL,
     `MarginSales` INT,
