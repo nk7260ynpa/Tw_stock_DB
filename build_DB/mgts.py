@@ -52,3 +52,10 @@ class BuildMGTSTABLETranslate(BuildMGTSTABLE):
         df = pd.read_csv("build_DB/MGTS_sql/mgts_translate.csv")
         df.to_sql("Translate", conn, if_exists='append', index=False, chunksize=1000)
         conn.commit()
+
+class BuildMGTSTABLEUploadDate(BuildMGTSTABLE):
+    def __init__(self):
+        super().__init__()
+    
+    def post_process(self, conn):
+        pass
