@@ -1,6 +1,7 @@
 CREATE TABLE `MGTS`.`DailyPrice` (
     `Date` DATE NOT NULL,
     `SecurityCode` VARCHAR(10) NOT NULL,
+    `MarginPurchase` INT,
     `MarginSales` INT,
     `CashRedemption` INT,
     `MarginPurchaseBalanceOfPreviousDay` INT,
