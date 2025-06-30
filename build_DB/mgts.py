@@ -37,3 +37,18 @@ class BuildMGTSTABLEStockName(BuildMGTSTABLE):
         df = pd.read_csv("build_DB/MGTS_sql/mgts_code.csv")
         df.to_sql("StockName", conn, if_exists='append', index=False, chunksize=1000)
         conn.commit()
+
+class BuildMGTSTABLETranslate(BuildMGTSTABLE):
+    def __init__(self):
+        super().__init__()
+    
+    def post_process(self, conn):
+        """
+        Upload the translation column data match Translate table.
+        
+        Args:
+            conn: Database connection object.
+        """
+        df = pd.read_csv("build_DB/MGTS_sql/mgts_translate.csv")
+        df.to_sql("Translate", conn, if_exists='append', index=False, chunksize=1000)
+        conn.commit()
