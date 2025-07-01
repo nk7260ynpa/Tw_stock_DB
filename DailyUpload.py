@@ -38,7 +38,7 @@ if __name__ == "__main__":
     schedule.every().day.at("16:18").do(daily_craw, "TPEX")
     schedule.every().day.at("16:23").do(daily_craw, "TAIFEX")
     schedule.every().day.at("16:33").do(daily_craw, "FAOI")
-    schedule.every().day.at("16:45").do(daily_craw, "MGTS")
+    schedule.every().day.at("21:45").do(daily_craw, "MGTS")
 
     while True:
         schedule.run_pending()
