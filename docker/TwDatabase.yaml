@@ -5,6 +5,7 @@ services:
     image: mysql:8.3
     command: mysqld --default-authentication-plugin=mysql_native_password
     container_name: tw_stock_database
+    restart: "always"
     ports: 
         - 3306:3306
     environment: 
@@ -19,6 +20,7 @@ services:
   phpmyadmin:
     image: phpmyadmin:5.2.1
     container_name: tw_phpmyadmin
+    restart: "always"
     links: 
         - database:db
     ports:
