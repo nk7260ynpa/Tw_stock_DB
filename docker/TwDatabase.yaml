@@ -13,7 +13,7 @@ services:
         MYSQL_PASSWORD: stock
         MYSQL_ROOT_PASSWORD: stock
     volumes:
-        - StockDB:/var/lib/mysql
+        - ../StockDB:/var/lib/mysql
     networks:
         - db_network
 
