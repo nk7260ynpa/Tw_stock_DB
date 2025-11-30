@@ -14,7 +14,7 @@ docker compose -f docker/TwDatabase.yaml up -d
 
 ## 建立資料庫
 ```bash
-# 建立TWSE資料庫
+# 建立股市資料庫
 python main.py
 ```
 
