@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   database:
-    image: mysql:8.3
+    image: nk7260ynpa/tw_stock_database:1.0.0
     command: mysqld --default-authentication-plugin=mysql_native_password
     container_name: tw_stock_database
     restart: "always"
@@ -18,7 +18,7 @@ services:
         - db_network
 
   phpmyadmin:
-    image: phpmyadmin:5.2.1
+    image: nk7260ynpa/db_manager:1.0.0
     container_name: tw_phpmyadmin
     restart: "always"
     links: 

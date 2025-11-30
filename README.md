@@ -27,3 +27,7 @@ docker compose -f docker/docker-compose.yml up -d
 ```bash
 python upload.py --date {日期}
 ```
+
+CHANGE LOG:
+2025/12/01: 將mysql:8.3 設為 nk7260ynpa/tw_stock_database:1.0.0
+2025/12/01: 將phpmyadmin:5.2.1 設為 nk7260ynpa/db_manager:1.0.0
