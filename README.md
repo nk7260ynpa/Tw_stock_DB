@@ -9,7 +9,7 @@ docker network create db_network
 ```
 啟動 DB
 ```bash
-docker compose -f TwDatabase.yaml up -d
+docker compose -f docker/TwDatabase.yaml up -d
 ```
 
 ## 建立資料庫
