@@ -1,0 +1,1 @@
+docker build -f docker/DBmaker -t nk7260ynpa/dbmaker:latest .
