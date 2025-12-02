@@ -31,7 +31,7 @@ def main(opt):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Build the database and tables.")
-    parser.add_argument("--host", type=str, default="localhost:3306", help="Database host")
+    parser.add_argument("--host", type=str, default="tw_stock_database", help="Database host")
     parser.add_argument("--user", type=str, default="root", help="Database user")
     parser.add_argument("--password", type=str, default="stock", help="Database password")
     opt = parser.parse_args()
