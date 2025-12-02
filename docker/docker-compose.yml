@@ -18,7 +18,7 @@ services:
       - "8000"
   
   tw_stocker_daily_process:
-    image: nk7260ynpa/tw_stocker_daily_process:latest
+    image: nk7260ynpa/tw_stocker_daily_process:1.0.1
     container_name: tw_stocker_daily_process
     restart: "always"
     networks:
