@@ -1,1 +1,0 @@
-docker run --network db_network nk7260ynpa/dbmaker:latest
