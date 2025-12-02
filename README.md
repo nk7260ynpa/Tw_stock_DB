@@ -44,3 +44,4 @@ CHANGE LOG:
 - 2025/12/01: 刪除 docker volume 設定
 - 2025/12/02: 使用docker container 取代原生環境
 - 2025/12/03: 更新每日爬蟲時間
+- 2025/12/03: 將建立docker image 指令改到｀ README.md
