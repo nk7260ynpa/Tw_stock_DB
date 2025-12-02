@@ -31,3 +31,4 @@ CHANGE LOG:
 2025/12/01: 將mysql:8.3 設為 nk7260ynpa/tw_stock_database:1.0.0
 2025/12/01: 將phpmyadmin:5.2.1 設為 nk7260ynpa/db_manager:1.0.0
 2025/12/01: 刪除 docker volume 設定
+2025/12/02: 使用docker container 取代原生環境
