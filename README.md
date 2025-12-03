@@ -24,7 +24,7 @@ docker compose -f docker/docker-compose.yml up -d
 
 ## 爬蟲資料庫
 ```bash
-python upload.py --date {日期}
+python upload.py --start_date {日期} --end_date {日期}
 ```
 
 # 2. 建立 docker image
