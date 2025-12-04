@@ -14,7 +14,7 @@ docker compose -f docker/TwDatabase.yaml up -d
 ## 建立資料庫
 ```bash
 # 建立股市資料庫
-docker run --network db_network nk7260ynpa/dbmaker:1.0.0
+docker run --rm --network db_network nk7260ynpa/dbmaker:1.0.0
 ```
 
 ## 啟動爬蟲 server
