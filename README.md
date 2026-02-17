@@ -23,7 +23,19 @@ docker compose -f docker/TwDatabase.yaml up -d
 
 #### 2. 建立資料庫
 ```bash
-docker run --rm --network db_network nk7260ynpa/dbmaker:1.0.0
+docker run --rm --network db_network -v $(pwd)/logs:/workspace/logs nk7260ynpa/dbmaker:1.0.0
+```
+
+## 單元測試
+```bash
+# 執行所有測試
+docker run --rm nk7260ynpa/dbmaker:1.0.0 python -m pytest test/
+
+# 執行特定測試檔案
+docker run --rm nk7260ynpa/dbmaker:1.0.0 python -m pytest test/test_build_DB/test_base.py
+
+# 顯示詳細測試結果
+docker run --rm nk7260ynpa/dbmaker:1.0.0 python -m pytest test/ -v
 ```
 
 ## 建立 Docker Image

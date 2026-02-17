@@ -4,3 +4,5 @@ cryptography
 easydict
 pandas
 sqlalchemy
+pytest
+pytest-mock

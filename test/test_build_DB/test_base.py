@@ -55,22 +55,24 @@ class TestBuildEmptyDB:
         assert exists is False
 
     def test_build_pass(self, build_db, mocker):
+        """資料庫不存在時，應執行 CREATE DATABASE 並 commit。"""
         mocker_conn_server = mocker.Mock()
-        mocker_conn_server.execute.return_value = None
-        mocker_conn_server.commit.return_value = None
-        mocker_conn_server.close.return_value = None
-
         mocker.patch.object(build_db, 'check_db_exists', return_value=False)
+
         build_db.build(mocker_conn_server)
+
+        mocker_conn_server.execute.assert_called_once()
+        mocker_conn_server.commit.assert_called_once()
 
     def test_build_fail(self, build_db, mocker):
+        """資料庫已存在時，不應執行 CREATE DATABASE。"""
         mocker_conn_server = mocker.Mock()
-        mocker_conn_server.execute.return_value = None
-        mocker_conn_server.commit.return_value = None
-        mocker_conn_server.close.return_value = None
-
         mocker.patch.object(build_db, 'check_db_exists', return_value=True)
+
         build_db.build(mocker_conn_server)
+
+        mocker_conn_server.execute.assert_not_called()
+        mocker_conn_server.commit.assert_not_called()
         
 class BuildTEMPTABLETemp(BaseBuildTABLE):
     def post_process(self, conn):
@@ -81,7 +83,7 @@ class BuildTEMPTABLETemp(BaseBuildTABLE):
 
 @pytest.fixture
 def build_temp_table():
-    temp_file_path = "build_DB/TEMP_sql/temp.sql"
+    temp_file_path = "build_DB/TEMP_sql/Temp.sql"
     # Ensure the directory exists before creating the file
     os.makedirs(os.path.dirname(temp_file_path), exist_ok=True)
     
@@ -132,22 +134,28 @@ class TestBaseBuildTABLE:
         assert exists is False
 
     def test_build_pass(self, build_temp_table, mocker):
+        """資料表不存在時，應執行 CREATE TABLE、commit 並呼叫 post_process。"""
         mocker_conn_server = mocker.Mock()
-        mocker_conn_server.execute.return_value = None
-        mocker_conn_server.commit.return_value = None
-        mocker_conn_server.close.return_value = None
-
         mocker.patch.object(build_temp_table, 'check_table_exists', return_value=False)
-        build_temp_table.build(mocker_conn_server)
-    
-    def test_build_fail(self, build_temp_table, mocker):
-        mocker_conn_server = mocker.Mock()
-        mocker_conn_server.execute.return_value = None
-        mocker_conn_server.commit.return_value = None
-        mocker_conn_server.close.return_value = None
+        mocker.patch.object(build_temp_table, 'post_process')
 
-        mocker.patch.object(build_temp_table, 'check_table_exists', return_value=True)
         build_temp_table.build(mocker_conn_server)
+
+        mocker_conn_server.execute.assert_called_once()
+        mocker_conn_server.commit.assert_called_once()
+        build_temp_table.post_process.assert_called_once_with(mocker_conn_server)
+
+    def test_build_fail(self, build_temp_table, mocker):
+        """資料表已存在時，不應執行 CREATE TABLE。"""
+        mocker_conn_server = mocker.Mock()
+        mocker.patch.object(build_temp_table, 'check_table_exists', return_value=True)
+        mocker.patch.object(build_temp_table, 'post_process')
+
+        build_temp_table.build(mocker_conn_server)
+
+        mocker_conn_server.execute.assert_not_called()
+        mocker_conn_server.commit.assert_not_called()
+        build_temp_table.post_process.assert_not_called()
 
 @pytest.fixture
 def build_temp(mocker):

@@ -19,4 +19,6 @@ done
 echo "MySQL 已就緒"
 
 # 執行 DBmaker 建立資料庫
-docker run --rm --network db_network nk7260ynpa/dbmaker:1.0.0
+docker run --rm --network db_network \
+  -v "${SCRIPT_DIR}/logs:/workspace/logs" \
+  nk7260ynpa/dbmaker:1.0.0
