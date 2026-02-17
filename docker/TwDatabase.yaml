@@ -17,19 +17,6 @@ services:
     networks:
         - db_network
 
-  phpmyadmin:
-    image: nk7260ynpa/db_manager:1.0.0
-    container_name: tw_phpmyadmin
-    restart: "always"
-    links: 
-        - database:db
-    ports:
-        - 8000:80
-    depends_on:
-      - database
-    networks:
-      - db_network
-     
 networks:
   db_network:
     external: true
