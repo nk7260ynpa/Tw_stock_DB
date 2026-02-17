@@ -10,5 +10,6 @@ COPY ../ /workspace/
 COPY ../build_DB /workspace/build_DB
 COPY ../requirements.txt /workspace/requirements.txt
 RUN pip install -r requirements.txt
+RUN mkdir -p /workspace/logs
 
 CMD ["python", "main.py"]

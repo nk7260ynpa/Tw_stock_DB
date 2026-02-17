@@ -1,8 +1,11 @@
+import logging
 import os
 import re
 from abc import ABC, abstractmethod
 
 from sqlalchemy import text
+
+logger = logging.getLogger(__name__)
 
 class BuildEmptyDB():    
     def __init__(self, sql_file_path):
@@ -69,9 +72,9 @@ class BuildEmptyDB():
         if not self.check_db_exists(conn_server):
             conn_server.execute(text(self.sql))
             conn_server.commit()
-            print(f"Database '{self.db_name}' created successfully.")
+            logger.info("資料庫 '%s' 建立成功", self.db_name)
         else:
-            print(f"Database '{self.db_name}' already exists.")
+            logger.info("資料庫 '%s' 已存在", self.db_name)
 
 
 class BaseBuildTABLE(ABC):
@@ -132,9 +135,9 @@ class BaseBuildTABLE(ABC):
             conn.execute(text(self.sql))
             conn.commit()
             self.post_process(conn)
-            print(f"Table '{self.table_name}' created successfully.")
+            logger.info("資料表 '%s' 建立成功", self.table_name)
         else:
-            print(f"Table '{self.table_name}' already exists.")
+            logger.info("資料表 '%s' 已存在", self.table_name)
 
 class BaseBuild(ABC):
     def __init__(self, typeclass, name):

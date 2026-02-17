@@ -4,7 +4,14 @@
 
 ## 使用方式
 
-### 1. 啟動 SQL DB Server
+### 快速啟動
+```bash
+bash run.sh
+```
+
+### 手動操作
+
+#### 1. 啟動 SQL DB Server
 ```bash
 # 建立 DB docker network
 docker network create db_network
@@ -14,17 +21,14 @@ docker network create db_network
 docker compose -f docker/TwDatabase.yaml up -d
 ```
 
-### 2. 建立資料庫
+#### 2. 建立資料庫
 ```bash
-# 建立股市資料庫
 docker run --rm --network db_network nk7260ynpa/dbmaker:1.0.0
 ```
 
 ## 建立 Docker Image
-
-### 建立 DB maker image
 ```bash
-docker build -f docker/DBmaker -t nk7260ynpa/dbmaker:1.0.0 .
+bash docker/build.sh
 ```
 
 ## CHANGE LOG
@@ -37,3 +41,4 @@ docker build -f docker/DBmaker -t nk7260ynpa/dbmaker:1.0.0 .
 - 2026/02/17: 移除上傳與爬蟲相關功能，僅保留建立 DB 功能
 - 2026/02/17: 移除 phpmyadmin 服務
 - 2026/02/17: 將 MySQL image 升級為 mysql:9.6.0，移除已廢棄的 authentication plugin 參數
+- 2026/02/17: 新增 run.sh、docker/build.sh、logs/，將 print 改為 logging
