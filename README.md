@@ -36,3 +36,4 @@ docker build -f docker/DBmaker -t nk7260ynpa/dbmaker:1.0.0 .
 - 2025/12/04: 調整建立資料庫指令
 - 2026/02/17: 移除上傳與爬蟲相關功能，僅保留建立 DB 功能
 - 2026/02/17: 移除 phpmyadmin 服務
+- 2026/02/17: 將 MySQL image 升級為 mysql:9.6.0，移除已廢棄的 authentication plugin 參數

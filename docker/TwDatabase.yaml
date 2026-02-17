@@ -2,8 +2,7 @@ version: '3.8'
 
 services:
   database:
-    image: nk7260ynpa/tw_stock_database:1.0.0
-    command: mysqld --default-authentication-plugin=mysql_native_password
+    image: mysql:9.6.0
     container_name: tw_stock_database
     restart: "always"
     ports: 
@@ -14,13 +13,15 @@ services:
         MYSQL_ROOT_PASSWORD: stock
     volumes:
         - ../StockDB:/var/lib/mysql
+    healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pstock"]
+        interval: 5s
+        timeout: 5s
+        retries: 10
+        start_period: 30s
     networks:
         - db_network
 
 networks:
   db_network:
-    external: true
-
-volumes:
-  StockDB:
     external: true

@@ -34,7 +34,7 @@ class BuildTAIFEXTABLETranslate(BuildTAIFEXTABLE):
         Args:
             conn: Database connection object.
         """
-        df = pd.read_csv("build_DB/TAIFEX_sql/TAIFEX_translate.csv")
+        df = pd.read_csv("build_DB/TAIFEX_sql/taifex_translate.csv")
         df.to_sql("Translate", conn, if_exists='append', index=False, chunksize=1000)
         conn.commit()
 
