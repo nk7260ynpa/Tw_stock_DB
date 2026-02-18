@@ -54,3 +54,5 @@ bash docker/build.sh
 - 2026/02/17: 移除 phpmyadmin 服務
 - 2026/02/17: 將 MySQL image 升級為 mysql:9.6.0，移除已廢棄的 authentication plugin 參數
 - 2026/02/17: 新增 run.sh、docker/build.sh、logs/，將 print 改為 logging
+- 2026/02/17: 新增 pytest 依賴、掛載 logs 至容器、強化單元測試驗證
+- 2026/02/18: 將 MySQL image 改為 nk7260ynpa/mysql:9.6.0
