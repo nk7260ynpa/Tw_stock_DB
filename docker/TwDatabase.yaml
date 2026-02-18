@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   database:
-    image: mysql:9.6.0
+    image: nk7260ynpa/mysql:9.6.0
     container_name: tw_stock_database
     restart: "always"
     ports: 
