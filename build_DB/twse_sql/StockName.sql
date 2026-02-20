@@ -4,5 +4,8 @@ CREATE TABLE `TWSE`.`StockName` (
     `CompanyName` VARCHAR(50) DEFAULT NULL,
     `IndustryCode` VARCHAR(5) DEFAULT NULL,
     `Industry` VARCHAR(20) DEFAULT NULL,
+    `NormalShares` BIGINT DEFAULT NULL,
+    `PrivateShares` BIGINT DEFAULT NULL,
+    `SpecialShares` BIGINT DEFAULT NULL,
     PRIMARY KEY (`SecurityCode`)
 )

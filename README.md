@@ -87,3 +87,4 @@ bash docker/build.sh
 - 2026/02/18: 將 MySQL image 改為 nk7260ynpa/mysql:9.6.0
 - 2026/02/20: TWSE StockName 新增 CompanyName、IndustryCode、Industry 欄位
 - 2026/02/20: 改進資料表建立邏輯，既有資料表可自動補上缺少的欄位（ALTER TABLE ADD COLUMN）
+- 2026/02/21: TWSE StockName 新增 NormalShares、PrivateShares、SpecialShares 欄位

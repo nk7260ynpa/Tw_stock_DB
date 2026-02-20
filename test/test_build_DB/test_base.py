@@ -187,6 +187,9 @@ def build_stockname_table():
         "    `CompanyName` VARCHAR(50) DEFAULT NULL,\n"
         "    `IndustryCode` VARCHAR(5) DEFAULT NULL,\n"
         "    `Industry` VARCHAR(20) DEFAULT NULL,\n"
+        "    `NormalShares` BIGINT DEFAULT NULL,\n"
+        "    `PrivateShares` BIGINT DEFAULT NULL,\n"
+        "    `SpecialShares` BIGINT DEFAULT NULL,\n"
         "    PRIMARY KEY (`SecurityCode`)\n"
         ")"
     )
@@ -215,13 +218,17 @@ class TestGetDefinedColumns:
         assert 'CompanyName' in columns
         assert 'IndustryCode' in columns
         assert 'Industry' in columns
-        assert len(columns) == 5
+        assert 'NormalShares' in columns
+        assert 'PrivateShares' in columns
+        assert 'SpecialShares' in columns
+        assert len(columns) == 8
 
     def test_column_definitions(self, build_stockname_table):
         """應正確解析欄位的型別與約束。"""
         columns = build_stockname_table._get_defined_columns()
         assert columns['SecurityCode'] == 'VARCHAR(10) NOT NULL'
         assert columns['CompanyName'] == 'VARCHAR(50) DEFAULT NULL'
+        assert columns['NormalShares'] == 'BIGINT DEFAULT NULL'
 
     def test_excludes_primary_key(self, build_stockname_table):
         """不應將 PRIMARY KEY 解析為欄位。"""
@@ -257,12 +264,15 @@ class TestAlterTableAddColumns:
 
         result = build_stockname_table._alter_table_add_columns(mock_conn)
 
-        # 應執行 3 次 ALTER（CompanyName, IndustryCode, Industry）
-        assert mock_conn.execute.call_count == 3
+        # 應執行 6 次 ALTER（CompanyName, IndustryCode, Industry, NormalShares, PrivateShares, SpecialShares）
+        assert mock_conn.execute.call_count == 6
         mock_conn.commit.assert_called_once()
 
         # 驗證回傳缺少的欄位集合
-        assert result == {'CompanyName', 'IndustryCode', 'Industry'}
+        assert result == {
+            'CompanyName', 'IndustryCode', 'Industry',
+            'NormalShares', 'PrivateShares', 'SpecialShares'
+        }
 
         # 驗證 ALTER SQL 內容
         executed_sqls = [
@@ -271,13 +281,19 @@ class TestAlterTableAddColumns:
         assert any('CompanyName' in sql for sql in executed_sqls)
         assert any('IndustryCode' in sql for sql in executed_sqls)
         assert any('Industry' in sql and 'IndustryCode' not in sql for sql in executed_sqls)
+        assert any('NormalShares' in sql for sql in executed_sqls)
+        assert any('PrivateShares' in sql for sql in executed_sqls)
+        assert any('SpecialShares' in sql for sql in executed_sqls)
 
     def test_no_missing_columns(self, build_stockname_table, mocker):
         """欄位完整時，不應執行任何 ALTER 操作。"""
         mock_conn = mocker.Mock()
         mocker.patch.object(
             build_stockname_table, '_get_existing_columns',
-            return_value={'SecurityCode', 'StockName', 'CompanyName', 'IndustryCode', 'Industry'}
+            return_value={
+                'SecurityCode', 'StockName', 'CompanyName', 'IndustryCode', 'Industry',
+                'NormalShares', 'PrivateShares', 'SpecialShares'
+            }
         )
 
         result = build_stockname_table._alter_table_add_columns(mock_conn)
