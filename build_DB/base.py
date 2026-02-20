@@ -123,13 +123,78 @@ class BaseBuildTABLE(ABC):
         Post-processing steps after the table is created.
         """
         pass
-    
-    def build(self, conn):
+
+    def _get_defined_columns(self):
+        """從 SQL 定義檔解析出所有欄位名稱與其定義。
+
+        Returns:
+            dict: 欄位名稱為 key，欄位定義（型別與約束）為 value。
+                  例如 {'SecurityCode': 'VARCHAR(10) NOT NULL', ...}
         """
-        Build the table using the SQL command read from the file.
-        
+        columns = {}
+        for line in self.sql.splitlines():
+            line = line.strip()
+            match = re.match(r'^`(\w+)`\s+(.+?)(?:,\s*)?$', line)
+            if match:
+                col_name = match.group(1)
+                col_def = match.group(2).rstrip(',').strip()
+                columns[col_name] = col_def
+        return columns
+
+    def _get_existing_columns(self, conn):
+        """從 information_schema 查詢資料表現有的欄位名稱。
+
         Args:
-            conn: The database connection object to execute the SQL command.
+            conn: 資料庫連線物件。
+
+        Returns:
+            set: 現有欄位名稱的集合。
+        """
+        query = text(
+            f"SELECT COLUMN_NAME FROM information_schema.COLUMNS "
+            f"WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{self.table_name}'"
+        )
+        result = conn.execute(query)
+        return {row[0] for row in result.fetchall()}
+
+    def _alter_table_add_columns(self, conn):
+        """比對 SQL 定義與現有欄位，對缺少的欄位執行 ALTER TABLE ADD COLUMN。
+
+        Args:
+            conn: 資料庫連線物件。
+
+        Returns:
+            set: 本次新增的欄位名稱集合，若無缺少欄位則為空集合。
+        """
+        defined_columns = self._get_defined_columns()
+        existing_columns = self._get_existing_columns(conn)
+        missing_columns = set(defined_columns.keys()) - existing_columns
+
+        for col_name in missing_columns:
+            col_def = defined_columns[col_name]
+            alter_sql = f"ALTER TABLE `{self.table_name}` ADD COLUMN `{col_name}` {col_def}"
+            conn.execute(text(alter_sql))
+            logger.info("資料表 '%s' 新增欄位 '%s'", self.table_name, col_name)
+
+        if missing_columns:
+            conn.commit()
+
+        return missing_columns
+
+    def post_alter(self, conn, missing_columns):
+        """新增欄位後的資料回填處理。子類別可覆寫此方法。
+
+        Args:
+            conn: 資料庫連線物件。
+            missing_columns (set): 本次新增的欄位名稱集合。
+        """
+        pass
+
+    def build(self, conn):
+        """建立資料表，或對既有資料表補上缺少的欄位並回填資料。
+
+        Args:
+            conn: 資料庫連線物件。
         """
         if not self.check_table_exists(conn):
             conn.execute(text(self.sql))
@@ -137,6 +202,9 @@ class BaseBuildTABLE(ABC):
             self.post_process(conn)
             logger.info("資料表 '%s' 建立成功", self.table_name)
         else:
+            missing_columns = self._alter_table_add_columns(conn)
+            if missing_columns:
+                self.post_alter(conn, missing_columns)
             logger.info("資料表 '%s' 已存在", self.table_name)
 
 class BaseBuild(ABC):

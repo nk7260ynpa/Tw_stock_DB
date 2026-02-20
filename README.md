@@ -1,6 +1,35 @@
 # DB_builder
 
-台灣股市資料庫建構工具，用於建立 MySQL 資料庫與資料表。
+台灣股市資料庫建構工具，建立 5 個 MySQL 資料庫（TWSE、TPEX、TAIFEX、FAOI、MGTS），
+每個資料庫包含 DailyPrice、StockName、Translate、UploadDate 四張資料表。
+所有程式碼皆在 Docker container 中執行。
+
+## 專案架構
+
+```
+.
+├── main.py                  # 主程式入口
+├── routers.py               # MySQLRouter 連線路由
+├── clients.py               # SQLAlchemy + pymysql 連線設定
+├── run.sh                   # 一鍵啟動腳本
+├── requirements.txt         # Python 套件依賴
+├── build_DB/                # 資料庫建構模組
+│   ├── base.py              # 核心抽象類別（BuildEmptyDB、BaseBuildTABLE、BaseBuild）
+│   ├── twse.py              # TWSE 資料庫實作
+│   ├── tpex.py              # TPEX 資料庫實作
+│   ├── taifex.py            # TAIFEX 資料庫實作
+│   ├── faoi.py              # FAOI 資料庫實作
+│   ├── mgts.py              # MGTS 資料庫實作
+│   └── *_sql/               # 各資料庫的 SQL 定義檔與 CSV 初始數據
+├── docker/                  # Docker 相關設定
+│   ├── build.sh             # 建立 Docker image 腳本
+│   ├── Dockerfile           # Docker image 定義
+│   └── TwDatabase.yaml      # MySQL docker compose 設定
+├── test/                    # 單元測試
+│   └── test_build_DB/
+│       └── test_base.py     # base.py 單元測試
+└── logs/                    # 日誌輸出目錄
+```
 
 ## 使用方式
 
@@ -56,3 +85,5 @@ bash docker/build.sh
 - 2026/02/17: 新增 run.sh、docker/build.sh、logs/，將 print 改為 logging
 - 2026/02/17: 新增 pytest 依賴、掛載 logs 至容器、強化單元測試驗證
 - 2026/02/18: 將 MySQL image 改為 nk7260ynpa/mysql:9.6.0
+- 2026/02/20: TWSE StockName 新增 CompanyName、IndustryCode、Industry 欄位
+- 2026/02/20: 改進資料表建立邏輯，既有資料表可自動補上缺少的欄位（ALTER TABLE ADD COLUMN）

@@ -106,30 +106,30 @@ class TestBaseBuildTABLE:
     def test_check_table_exists(self, build_temp_table, mocker):
         # Mock the connection object
         mock_conn = mocker.Mock()
-        
+
         # Mock the execute method to return a mock result
         mock_results = mocker.Mock()
         mock_results.fetchone.return_value = [1]
         mock_conn.execute.return_value = mock_results
-        
+
         # Use the mocked connection to test check_table_exists
         exists = build_temp_table.check_table_exists(mock_conn)
-        
+
         # Assert that the table exists
         assert exists is True
 
     def test_check_table_not_exists(self, build_temp_table, mocker):
         # Mock the connection object
         mock_conn = mocker.Mock()
-        
+
         # Mock the execute method to return a mock result
         mock_results = mocker.Mock()
         mock_results.fetchone.return_value = [0]
         mock_conn.execute.return_value = mock_results
-        
+
         # Use the mocked connection to test check_table_exists
         exists = build_temp_table.check_table_exists(mock_conn)
-        
+
         # Assert that the table does not exist
         assert exists is False
 
@@ -145,17 +145,146 @@ class TestBaseBuildTABLE:
         mocker_conn_server.commit.assert_called_once()
         build_temp_table.post_process.assert_called_once_with(mocker_conn_server)
 
-    def test_build_fail(self, build_temp_table, mocker):
-        """資料表已存在時，不應執行 CREATE TABLE。"""
+    def test_build_existing_table_calls_alter(self, build_temp_table, mocker):
+        """資料表已存在時，應呼叫 _alter_table_add_columns。"""
         mocker_conn_server = mocker.Mock()
         mocker.patch.object(build_temp_table, 'check_table_exists', return_value=True)
-        mocker.patch.object(build_temp_table, 'post_process')
+        mocker.patch.object(
+            build_temp_table, '_alter_table_add_columns', return_value=set()
+        )
+        mocker.patch.object(build_temp_table, 'post_alter')
 
         build_temp_table.build(mocker_conn_server)
 
-        mocker_conn_server.execute.assert_not_called()
-        mocker_conn_server.commit.assert_not_called()
-        build_temp_table.post_process.assert_not_called()
+        build_temp_table._alter_table_add_columns.assert_called_once_with(mocker_conn_server)
+        build_temp_table.post_alter.assert_not_called()
+
+    def test_build_existing_table_calls_post_alter(self, build_temp_table, mocker):
+        """資料表已存在且有缺少欄位時，應呼叫 post_alter。"""
+        mocker_conn_server = mocker.Mock()
+        missing = {'NewCol'}
+        mocker.patch.object(build_temp_table, 'check_table_exists', return_value=True)
+        mocker.patch.object(
+            build_temp_table, '_alter_table_add_columns', return_value=missing
+        )
+        mocker.patch.object(build_temp_table, 'post_alter')
+
+        build_temp_table.build(mocker_conn_server)
+
+        build_temp_table.post_alter.assert_called_once_with(mocker_conn_server, missing)
+
+
+@pytest.fixture
+def build_stockname_table():
+    """建立使用多欄位 SQL 的 BaseBuildTABLE 實例，用於測試欄位解析。"""
+    temp_file_path = "build_DB/TESTDB_sql/StockName.sql"
+    os.makedirs(os.path.dirname(temp_file_path), exist_ok=True)
+
+    sql_content = (
+        "CREATE TABLE `TESTDB`.`StockName` (\n"
+        "    `SecurityCode` VARCHAR(10) NOT NULL,\n"
+        "    `StockName` VARCHAR(15) NOT NULL,\n"
+        "    `CompanyName` VARCHAR(50) DEFAULT NULL,\n"
+        "    `IndustryCode` VARCHAR(5) DEFAULT NULL,\n"
+        "    `Industry` VARCHAR(20) DEFAULT NULL,\n"
+        "    PRIMARY KEY (`SecurityCode`)\n"
+        ")"
+    )
+    with open(temp_file_path, 'w') as f:
+        f.write(sql_content)
+
+    build_obj = BuildTESTDBTABLEStockName()
+
+    temp_dir_path = "build_DB/TESTDB_sql"
+    if os.path.exists(temp_dir_path):
+        shutil.rmtree(temp_dir_path)
+    return build_obj
+
+
+class BuildTESTDBTABLEStockName(BaseBuildTABLE):
+    def post_process(self, conn):
+        pass
+
+
+class TestGetDefinedColumns:
+    def test_parse_all_columns(self, build_stockname_table):
+        """應正確解析 SQL 中所有欄位名稱與定義。"""
+        columns = build_stockname_table._get_defined_columns()
+        assert 'SecurityCode' in columns
+        assert 'StockName' in columns
+        assert 'CompanyName' in columns
+        assert 'IndustryCode' in columns
+        assert 'Industry' in columns
+        assert len(columns) == 5
+
+    def test_column_definitions(self, build_stockname_table):
+        """應正確解析欄位的型別與約束。"""
+        columns = build_stockname_table._get_defined_columns()
+        assert columns['SecurityCode'] == 'VARCHAR(10) NOT NULL'
+        assert columns['CompanyName'] == 'VARCHAR(50) DEFAULT NULL'
+
+    def test_excludes_primary_key(self, build_stockname_table):
+        """不應將 PRIMARY KEY 解析為欄位。"""
+        columns = build_stockname_table._get_defined_columns()
+        for col_name in columns:
+            assert 'PRIMARY' not in col_name
+
+
+class TestGetExistingColumns:
+    def test_returns_column_set(self, build_stockname_table, mocker):
+        """應從 information_schema 查詢結果回傳欄位名稱的集合。"""
+        mock_conn = mocker.Mock()
+        mock_result = mocker.Mock()
+        mock_result.fetchall.return_value = [
+            ('SecurityCode',), ('StockName',)
+        ]
+        mock_conn.execute.return_value = mock_result
+
+        columns = build_stockname_table._get_existing_columns(mock_conn)
+
+        assert columns == {'SecurityCode', 'StockName'}
+        mock_conn.execute.assert_called_once()
+
+
+class TestAlterTableAddColumns:
+    def test_add_missing_columns(self, build_stockname_table, mocker):
+        """有缺少欄位時，應對每個欄位執行 ALTER TABLE ADD COLUMN。"""
+        mock_conn = mocker.Mock()
+        mocker.patch.object(
+            build_stockname_table, '_get_existing_columns',
+            return_value={'SecurityCode', 'StockName'}
+        )
+
+        result = build_stockname_table._alter_table_add_columns(mock_conn)
+
+        # 應執行 3 次 ALTER（CompanyName, IndustryCode, Industry）
+        assert mock_conn.execute.call_count == 3
+        mock_conn.commit.assert_called_once()
+
+        # 驗證回傳缺少的欄位集合
+        assert result == {'CompanyName', 'IndustryCode', 'Industry'}
+
+        # 驗證 ALTER SQL 內容
+        executed_sqls = [
+            str(call.args[0].text) for call in mock_conn.execute.call_args_list
+        ]
+        assert any('CompanyName' in sql for sql in executed_sqls)
+        assert any('IndustryCode' in sql for sql in executed_sqls)
+        assert any('Industry' in sql and 'IndustryCode' not in sql for sql in executed_sqls)
+
+    def test_no_missing_columns(self, build_stockname_table, mocker):
+        """欄位完整時，不應執行任何 ALTER 操作。"""
+        mock_conn = mocker.Mock()
+        mocker.patch.object(
+            build_stockname_table, '_get_existing_columns',
+            return_value={'SecurityCode', 'StockName', 'CompanyName', 'IndustryCode', 'Industry'}
+        )
+
+        result = build_stockname_table._alter_table_add_columns(mock_conn)
+
+        assert result == set()
+        mock_conn.execute.assert_not_called()
+        mock_conn.commit.assert_not_called()
 
 @pytest.fixture
 def build_temp(mocker):
