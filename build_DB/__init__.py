@@ -1,5 +1,5 @@
 from .base import BaseBuild, BaseBuildTABLE
-from .twse import BuildTWSE, BuildTWSETABLE, BuildTWSETABLEDailyPrice
+from .twse import BuildTWSE, BuildTWSETABLE, BuildTWSETABLEDailyPrice, BuildTWSETABLECompanyInfo
 from .tpex import BuildTPEX, BuildTPEXTABLE, BuildTPEXTABLEDailyPrice
 from .taifex import BuildTAIFEX, BuildTAIFEXTABLE, BuildTAIFEXTABLEDailyPrice
 from .faoi import BuildFAOI, BuildFAOITABLE, BuildFAOITABLEDailyPrice
