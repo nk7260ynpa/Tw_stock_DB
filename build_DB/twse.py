@@ -42,6 +42,21 @@ class BuildTWSETABLEStockName(BuildTWSETABLE):
         df.to_sql("StockName", conn, if_exists='append', index=False, chunksize=1000)
         conn.commit()
 
+class BuildTWSETABLEIndustryMap(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """上傳產業對照資料至 IndustryMap 資料表。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        df = pd.read_csv("build_DB/TWSE_sql/twse_industry_map.csv", dtype=str)
+        df.to_sql("IndustryMap", conn, if_exists='append', index=False, chunksize=1000)
+        conn.commit()
+
+
 class BuildTWSETABLECompanyInfo(BuildTWSETABLE):
     def __init__(self):
         super().__init__()

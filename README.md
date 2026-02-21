@@ -90,3 +90,4 @@ bash docker/build.sh
 - 2026/02/21: TWSE StockName 新增 NormalShares、PrivateShares、SpecialShares 欄位
 - 2026/02/21: TWSE 新增 CompanyInfo 資料表（公司基本資訊）
 - 2026/02/21: TWSE StockName 移除公司相關欄位，改由 CompanyInfo 管理
+- 2026/02/21: TWSE 新增 IndustryMap 資料表，將 Industry 從 CompanyInfo 獨立管理
