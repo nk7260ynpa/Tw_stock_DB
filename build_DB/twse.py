@@ -111,6 +111,14 @@ class BuildTWSETABLECompanyInfo(BuildTWSETABLE):
         )
 
 
+class BuildTWSETABLEQuarterRevenue(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        pass
+
+
 class BuildTWSETABLETranslate(BuildTWSETABLE):
     def __init__(self):
         super().__init__()
