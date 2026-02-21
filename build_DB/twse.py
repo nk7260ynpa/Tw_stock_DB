@@ -42,45 +42,6 @@ class BuildTWSETABLEStockName(BuildTWSETABLE):
         df.to_sql("StockName", conn, if_exists='append', index=False, chunksize=1000)
         conn.commit()
 
-    def post_alter(self, conn, missing_columns):
-        """新增欄位後，從 CSV 回填資料至既有資料列。
-
-        Args:
-            conn: 資料庫連線物件。
-            missing_columns (set): 本次新增的欄位名稱集合。
-        """
-        df = pd.read_csv("build_DB/TWSE_sql/twse_code.csv", dtype=str)
-        csv_columns = set(df.columns)
-        update_cols = [c for c in missing_columns if c in csv_columns]
-        if not update_cols:
-            return
-
-        update_df = df[df[update_cols[0]].notna() & (df[update_cols[0]] != '')]
-        if update_df.empty:
-            return
-
-        set_clause = ', '.join(f'`{c}` = :{c}' for c in update_cols)
-        sql = text(
-            f"UPDATE `{self.table_name}` SET {set_clause} "
-            f"WHERE `SecurityCode` = :SecurityCode"
-        )
-
-        params_list = []
-        for _, row in update_df.iterrows():
-            params = {'SecurityCode': row['SecurityCode']}
-            for c in update_cols:
-                val = row[c]
-                params[c] = val if pd.notna(val) and val != '' else None
-            params_list.append(params)
-
-        for params in params_list:
-            conn.execute(sql, params)
-        conn.commit()
-        logger.info(
-            "資料表 '%s' 回填 %d 筆資料，欄位：%s",
-            self.table_name, len(params_list), ', '.join(update_cols)
-        )
-
 class BuildTWSETABLECompanyInfo(BuildTWSETABLE):
     def __init__(self):
         super().__init__()
