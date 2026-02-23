@@ -3,7 +3,7 @@
 台灣股市資料庫建構工具，建立 4 個 MySQL 資料庫（TWSE、TPEX、TAIFEX、FAOI），
 每個資料庫包含 DailyPrice、StockName、Translate、UploadDate 四張資料表。
 TWSE 額外包含 CompanyInfo、IndustryMap、QuarterRevenue、QuarterRevenueUploaded，
-以及 MGTS 前綴的資料表（MGTSDailyPrice、MGTSStockName、MGTSTranslate、MGTSUploadDate）。
+以及 MGTS 前綴的資料表（MGTSDailyPrice、MGTSUploadDate）。
 所有程式碼皆在 Docker container 中執行。
 
 ## 專案架構
@@ -95,3 +95,4 @@ bash docker/build.sh
 - 2026/02/21: TWSE 新增 IndustryMap 資料表，將 Industry 從 CompanyInfo 獨立管理
 - 2026/02/21: TWSE 新增 QuarterRevenue 資料表（季度營收資料）
 - 2026/02/24: 移除 MGTS 資料庫，將其資料表併入 TWSE 並加上 MGTS 前綴
+- 2026/02/24: 移除 MGTSStockName 資料表，將 MGTSTranslate 合併至 Translate

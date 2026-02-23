@@ -15,3 +15,17 @@ LastBestBidVolume,最後揭示買量
 LastBestAskPrice,最後揭示賣價
 LastBestAskVolume,最後揭示賣量
 PriceEarningratio,本益比
+MarginPurchase,融資買進
+MarginSales,融資賣出
+CashRedemption,融資現金償還
+MarginPurchaseBalanceOfPreviousDay,融資前日餘額
+MarginPurchaseBalanceOfTheDay,融資當日餘額
+MarginPurchaseQuotaForTheNextDay,融資隔日限額
+ShortCovering,融券買進
+ShortSale,融券賣出
+StockRedemption,融券現券償還
+ShortSaleBalanceOfPreviousDay,融券前日餘額
+ShortSaleBalanceOfTheDay,融券當日餘額
+ShortSaleQuotaForTheNextDay,融券隔日限額
+OffsettingOfMarginPurchasesAndShortSales,資券互抵
+Note,註記
