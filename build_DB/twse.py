@@ -145,6 +145,52 @@ class BuildTWSETABLETranslate(BuildTWSETABLE):
 class BuildTWSETABLEUploadDate(BuildTWSETABLE):
     def __init__(self):
         super().__init__()
-    
+
+    def post_process(self, conn):
+        pass
+
+
+class BuildTWSETABLEMGTSDailyPrice(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        pass
+
+
+class BuildTWSETABLEMGTSStockName(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """上傳融資融券證券代碼資料至 MGTSStockName 資料表。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        df = pd.read_csv("build_DB/TWSE_sql/mgts_code.csv")
+        df.to_sql("MGTSStockName", conn, if_exists='append', index=False, chunksize=1000)
+        conn.commit()
+
+
+class BuildTWSETABLEMGTSTranslate(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """上傳融資融券欄位翻譯資料至 MGTSTranslate 資料表。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        df = pd.read_csv("build_DB/TWSE_sql/mgts_translate.csv")
+        df.to_sql("MGTSTranslate", conn, if_exists='append', index=False, chunksize=1000)
+        conn.commit()
+
+
+class BuildTWSETABLEMGTSUploadDate(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+
     def post_process(self, conn):
         pass

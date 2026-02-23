@@ -1,10 +1,63 @@
 import argparse
 import logging
 
+from sqlalchemy import text
+
 import build_DB
 from routers import MySQLRouter
 
 logger = logging.getLogger(__name__)
+
+MGTS_MIGRATION_MAP = {
+    "DailyPrice": "MGTSDailyPrice",
+    "StockName": "MGTSStockName",
+    "Translate": "MGTSTranslate",
+    "UploadDate": "MGTSUploadDate",
+}
+
+
+def migrate_mgts_to_twse(conn_server):
+    """將舊 MGTS 資料庫的資料搬移至 TWSE 的 MGTS 前綴資料表，並刪除舊資料庫。
+
+    Args:
+        conn_server: 資料庫連線物件（不指定資料庫）。
+    """
+    result = conn_server.execute(
+        text("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA "
+             "WHERE SCHEMA_NAME = 'MGTS'")
+    )
+    if not result.fetchone():
+        logger.info("舊 MGTS 資料庫不存在，跳過遷移")
+        return
+
+    for old_table, new_table in MGTS_MIGRATION_MAP.items():
+        row_count = conn_server.execute(
+            text(f"SELECT COUNT(*) FROM `MGTS`.`{old_table}`")
+        ).scalar()
+
+        if row_count == 0:
+            logger.info("MGTS.%s 無資料，跳過", old_table)
+            continue
+
+        target_count = conn_server.execute(
+            text(f"SELECT COUNT(*) FROM `TWSE`.`{new_table}`")
+        ).scalar()
+
+        if target_count > 0:
+            logger.info("TWSE.%s 已有 %d 筆資料，跳過遷移", new_table, target_count)
+            continue
+
+        conn_server.execute(
+            text(f"INSERT INTO `TWSE`.`{new_table}` "
+                 f"SELECT * FROM `MGTS`.`{old_table}`")
+        )
+        conn_server.commit()
+        logger.info("已從 MGTS.%s 搬移 %d 筆資料至 TWSE.%s",
+                     old_table, row_count, new_table)
+
+    conn_server.execute(text("DROP DATABASE `MGTS`"))
+    conn_server.commit()
+    logger.info("已刪除舊 MGTS 資料庫")
 
 
 def main(opt):
@@ -26,6 +79,8 @@ def main(opt):
         conn_db = MySQLRouter(HOST, USER, PASSWORD, build_DB_obj.name).mysql_conn
         build_DB_obj.build_table(conn_db)
         conn_db.close()
+
+    migrate_mgts_to_twse(conn_server)
 
     conn_server.close()
     logger.info("所有資料庫與資料表建立完成")
