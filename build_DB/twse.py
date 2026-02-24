@@ -164,3 +164,19 @@ class BuildTWSETABLEMGTSUploadDate(BuildTWSETABLE):
 
     def post_process(self, conn):
         pass
+
+
+class BuildTWSETABLEFAOIDailyPrice(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        pass
+
+
+class BuildTWSETABLEFAOIUploadDate(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        pass

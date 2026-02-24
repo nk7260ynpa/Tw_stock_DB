@@ -14,6 +14,12 @@ MGTS_MIGRATION_MAP = {
     "UploadDate": "MGTSUploadDate",
 }
 
+FAOI_MIGRATION_MAP = {
+    "DailyPrice": "FAOIDailyPrice",
+    "Translate": "Translate",
+    "UploadDate": "FAOIUploadDate",
+}
+
 
 def consolidate_mgts_tables(conn_server):
     """合併 TWSE 中的 MGTS 冗餘資料表。
@@ -128,6 +134,104 @@ def migrate_mgts_to_twse(conn_server):
     logger.info("已刪除舊 MGTS 資料庫")
 
 
+def consolidate_faoi_tables(conn_server):
+    """合併 TWSE 中的 FAOI 冗餘資料表。
+
+    處理既有資料庫的遷移：
+    1. 將 FAOITranslate 的資料合併至 Translate
+    2. 刪除 FAOIStockName 和 FAOITranslate 資料表
+
+    Args:
+        conn_server: 資料庫連線物件（不指定資料庫）。
+    """
+    result = conn_server.execute(
+        text("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA "
+             "WHERE SCHEMA_NAME = 'TWSE'")
+    )
+    if not result.fetchone():
+        logger.info("TWSE 資料庫不存在，跳過合併")
+        return
+
+    faoi_translate_exists = conn_server.execute(
+        text("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES "
+             "WHERE TABLE_SCHEMA = 'TWSE' AND TABLE_NAME = 'FAOITranslate'")
+    ).fetchone()
+    if faoi_translate_exists:
+        conn_server.execute(
+            text("INSERT IGNORE INTO `TWSE`.`Translate` "
+                 "SELECT * FROM `TWSE`.`FAOITranslate`")
+        )
+        conn_server.commit()
+        logger.info("已將 TWSE.FAOITranslate 資料合併至 TWSE.Translate")
+
+    for table in ("FAOIStockName", "FAOITranslate"):
+        table_exists = conn_server.execute(
+            text("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES "
+                 "WHERE TABLE_SCHEMA = 'TWSE' AND TABLE_NAME = :tbl"),
+            {"tbl": table}
+        ).fetchone()
+        if table_exists:
+            conn_server.execute(
+                text(f"DROP TABLE `TWSE`.`{table}`")
+            )
+            conn_server.commit()
+            logger.info("已刪除 TWSE.%s 資料表", table)
+
+
+def migrate_faoi_to_twse(conn_server):
+    """將舊 FAOI 資料庫的資料搬移至 TWSE 的 FAOI 前綴資料表，並刪除舊資料庫。
+
+    Args:
+        conn_server: 資料庫連線物件（不指定資料庫）。
+    """
+    result = conn_server.execute(
+        text("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA "
+             "WHERE SCHEMA_NAME = 'FAOI'")
+    )
+    if not result.fetchone():
+        logger.info("舊 FAOI 資料庫不存在，跳過遷移")
+        return
+
+    for old_table, new_table in FAOI_MIGRATION_MAP.items():
+        row_count = conn_server.execute(
+            text(f"SELECT COUNT(*) FROM `FAOI`.`{old_table}`")
+        ).scalar()
+
+        if row_count == 0:
+            logger.info("FAOI.%s 無資料，跳過", old_table)
+            continue
+
+        if old_table == new_table:
+            conn_server.execute(
+                text(f"INSERT IGNORE INTO `TWSE`.`{new_table}` "
+                     f"SELECT * FROM `FAOI`.`{old_table}`")
+            )
+            conn_server.commit()
+            logger.info("已從 FAOI.%s 以 INSERT IGNORE 合併至 TWSE.%s",
+                         old_table, new_table)
+            continue
+
+        target_count = conn_server.execute(
+            text(f"SELECT COUNT(*) FROM `TWSE`.`{new_table}`")
+        ).scalar()
+
+        if target_count > 0:
+            logger.info("TWSE.%s 已有 %d 筆資料，跳過遷移", new_table, target_count)
+            continue
+
+        conn_server.execute(
+            text(f"INSERT INTO `TWSE`.`{new_table}` "
+                 f"SELECT * FROM `FAOI`.`{old_table}`")
+        )
+        conn_server.commit()
+        logger.info("已從 FAOI.%s 搬移 %d 筆資料至 TWSE.%s",
+                     old_table, row_count, new_table)
+
+    conn_server.execute(text("DROP DATABASE `FAOI`"))
+    conn_server.commit()
+    logger.info("已刪除舊 FAOI 資料庫")
+
+
 def main(opt):
     """建立資料庫與資料表的主函式。
 
@@ -150,6 +254,8 @@ def main(opt):
 
     consolidate_mgts_tables(conn_server)
     migrate_mgts_to_twse(conn_server)
+    consolidate_faoi_tables(conn_server)
+    migrate_faoi_to_twse(conn_server)
 
     conn_server.close()
     logger.info("所有資料庫與資料表建立完成")

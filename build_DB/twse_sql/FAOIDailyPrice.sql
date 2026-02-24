@@ -1,4 +1,4 @@
-CREATE TABLE `FAOI`.`DailyPrice` (
+CREATE TABLE `TWSE`.`FAOIDailyPrice` (
     `Date` DATE NOT NULL,
     `SecurityCode` VARCHAR(10) NOT NULL,
     `ForeignInvestorsTotalBuy` INT,
