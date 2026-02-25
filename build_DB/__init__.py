@@ -3,6 +3,7 @@ from .twse import (BuildTWSE, BuildTWSETABLE, BuildTWSETABLEDailyPrice,
                     BuildTWSETABLEIndustryMap, BuildTWSETABLECompanyInfo,
                     BuildTWSETABLEQuarterRevenue, BuildTWSETABLEQuarterRevenueUploaded,
                     BuildTWSETABLEMGTSDailyPrice, BuildTWSETABLEMGTSUploadDate,
-                    BuildTWSETABLEFAOIDailyPrice, BuildTWSETABLEFAOIUploadDate)
+                    BuildTWSETABLEFAOIDailyPrice, BuildTWSETABLEFAOIUploadDate,
+                    BuildTWSETABLETDCCStockLevel, BuildTWSETABLETDCC)
 from .tpex import BuildTPEX, BuildTPEXTABLE, BuildTPEXTABLEDailyPrice
 from .taifex import BuildTAIFEX, BuildTAIFEXTABLE, BuildTAIFEXTABLEDailyPrice

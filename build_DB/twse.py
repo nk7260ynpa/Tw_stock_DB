@@ -180,3 +180,29 @@ class BuildTWSETABLEFAOIUploadDate(BuildTWSETABLE):
 
     def post_process(self, conn):
         pass
+
+
+class BuildTWSETABLETDCCStockLevel(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """上傳持股分級對照資料至 TDCCStockLevel 資料表。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        df = pd.read_csv("build_DB/TWSE_sql/twse_tdcc_stock_level.csv")
+        df.to_sql(
+            "TDCCStockLevel", conn,
+            if_exists='append', index=False, chunksize=1000
+        )
+        conn.commit()
+
+
+class BuildTWSETABLETDCC(BuildTWSETABLE):
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        pass
