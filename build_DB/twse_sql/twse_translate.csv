@@ -47,3 +47,8 @@ DealersHedgeTotalSell,自營商賣出股數(避險)
 DealersHedgeDifference,自營商買賣超股數(避險)
 TotalDifference,三大法人買賣超股數
 Open,開盤
+Level,持股分級
+Holders,人數
+HoldingShares,股數
+HoldingRatio,占集保庫存數比例(%)
+HoldingRange,持股/單位數分級
