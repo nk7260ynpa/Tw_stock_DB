@@ -170,3 +170,4 @@ StockDB/*
 NewsContents/CTEE/*.txt
 NewsContents/CTEE/*/
 
+.DS_Store
