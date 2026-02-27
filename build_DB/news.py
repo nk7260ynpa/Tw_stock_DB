@@ -55,3 +55,23 @@ class BuildNEWSTABLECTEE(BuildNEWSTABLE):
             conn: 資料庫連線物件。
         """
         pass
+
+
+class BuildNEWSTABLECTEEUploaded(BuildNEWSTABLE):
+    """CTEEUploaded 資料表建構類別。
+
+    建立 NEWS.CTEEUploaded 資料表，用於記錄已抓取過 CTEE 新聞的日期。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後的後處理步驟。
+
+        CTEEUploaded 資料表無需初始數據匯入，不執行任何後處理。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        pass
