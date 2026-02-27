@@ -169,5 +169,7 @@ StockDB/*
 # NewsContents 新聞內容檔案
 NewsContents/CTEE/*.txt
 NewsContents/CTEE/*/
+NewsContents/CNYES/*.md
+NewsContents/CNYES/*/
 
 .DS_Store

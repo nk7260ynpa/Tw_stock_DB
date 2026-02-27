@@ -8,4 +8,5 @@ from .twse import (BuildTWSE, BuildTWSETABLE, BuildTWSETABLEDailyPrice,
 from .tpex import BuildTPEX, BuildTPEXTABLE, BuildTPEXTABLEDailyPrice
 from .taifex import BuildTAIFEX, BuildTAIFEXTABLE, BuildTAIFEXTABLEDailyPrice
 from .news import (BuildNEWS, BuildNEWSTABLE, BuildNEWSTABLECTEE,
-                    BuildNEWSTABLECTEEUploaded)
+                    BuildNEWSTABLECTEEUploaded, BuildNEWSTABLECNYES,
+                    BuildNEWSTABLECNYESUploaded)

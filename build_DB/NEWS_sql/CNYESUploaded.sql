@@ -1,0 +1,4 @@
+CREATE TABLE `NEWS`.`CNYESUploaded` (
+    `Date` DATE NOT NULL,
+    PRIMARY KEY (`Date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

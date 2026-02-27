@@ -75,3 +75,45 @@ class BuildNEWSTABLECTEEUploaded(BuildNEWSTABLE):
             conn: 資料庫連線物件。
         """
         pass
+
+
+class BuildNEWSTABLECNYES(BuildNEWSTABLE):
+    """CNYES（鉅亨網）新聞資料表建構類別。
+
+    建立 NEWS.CNYES 資料表，用於儲存鉅亨網的新聞資料。
+    欄位包含日期、時間、作者、標題、標籤與網址。
+    與 CTEE 的差異為不包含 SubHead（副標題）欄位。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後的後處理步驟。
+
+        CNYES 資料表無需初始數據匯入，不執行任何後處理。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        pass
+
+
+class BuildNEWSTABLECNYESUploaded(BuildNEWSTABLE):
+    """CNYESUploaded 資料表建構類別。
+
+    建立 NEWS.CNYESUploaded 資料表，用於記錄已抓取過 CNYES 新聞的日期。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後的後處理步驟。
+
+        CNYESUploaded 資料表無需初始數據匯入，不執行任何後處理。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        pass
