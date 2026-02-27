@@ -171,5 +171,7 @@ NewsContents/CTEE/*.txt
 NewsContents/CTEE/*/
 NewsContents/CNYES/*.md
 NewsContents/CNYES/*/
+NewsContents/PTT/*.md
+NewsContents/PTT/*/
 
 .DS_Store

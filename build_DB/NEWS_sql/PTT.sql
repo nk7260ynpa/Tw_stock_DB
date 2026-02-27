@@ -1,0 +1,9 @@
+CREATE TABLE `NEWS`.`PTT` (
+    `Date` DATE NOT NULL,
+    `Time` TIME DEFAULT NULL,
+    `Author` VARCHAR(100) DEFAULT NULL,
+    `Head` VARCHAR(500) NOT NULL,
+    `url` VARCHAR(1000) NOT NULL,
+    `ContentFile` VARCHAR(100) DEFAULT NULL,
+    PRIMARY KEY (`Date`, `url`(255))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

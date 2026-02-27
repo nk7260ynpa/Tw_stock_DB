@@ -9,4 +9,5 @@ from .tpex import BuildTPEX, BuildTPEXTABLE, BuildTPEXTABLEDailyPrice
 from .taifex import BuildTAIFEX, BuildTAIFEXTABLE, BuildTAIFEXTABLEDailyPrice
 from .news import (BuildNEWS, BuildNEWSTABLE, BuildNEWSTABLECTEE,
                     BuildNEWSTABLECTEEUploaded, BuildNEWSTABLECNYES,
-                    BuildNEWSTABLECNYESUploaded)
+                    BuildNEWSTABLECNYESUploaded, BuildNEWSTABLEPTT,
+                    BuildNEWSTABLEPTTUploaded)

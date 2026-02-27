@@ -117,3 +117,45 @@ class BuildNEWSTABLECNYESUploaded(BuildNEWSTABLE):
             conn: 資料庫連線物件。
         """
         pass
+
+
+class BuildNEWSTABLEPTT(BuildNEWSTABLE):
+    """PTT（批踢踢股版）新聞資料表建構類別。
+
+    建立 NEWS.PTT 資料表，用於儲存 PTT 股版的文章資料。
+    欄位包含日期、時間、作者、標題、網址與內容檔案路徑。
+    與 CNYES 的差異為不包含 HashTag（標籤）欄位。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後的後處理步驟。
+
+        PTT 資料表無需初始數據匯入，不執行任何後處理。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        pass
+
+
+class BuildNEWSTABLEPTTUploaded(BuildNEWSTABLE):
+    """PTTUploaded 資料表建構類別。
+
+    建立 NEWS.PTTUploaded 資料表，用於記錄已抓取過 PTT 股版文章的日期。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後的後處理步驟。
+
+        PTTUploaded 資料表無需初始數據匯入，不執行任何後處理。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        pass

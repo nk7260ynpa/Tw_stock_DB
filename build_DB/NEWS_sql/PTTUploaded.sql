@@ -1,0 +1,4 @@
+CREATE TABLE `NEWS`.`PTTUploaded` (
+    `Date` DATE NOT NULL,
+    PRIMARY KEY (`Date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
