@@ -10,4 +10,5 @@ from .taifex import BuildTAIFEX, BuildTAIFEXTABLE, BuildTAIFEXTABLEDailyPrice
 from .news import (BuildNEWS, BuildNEWSTABLE, BuildNEWSTABLECTEE,
                     BuildNEWSTABLECTEEUploaded, BuildNEWSTABLECNYES,
                     BuildNEWSTABLECNYESUploaded, BuildNEWSTABLEPTT,
-                    BuildNEWSTABLEPTTUploaded)
+                    BuildNEWSTABLEPTTUploaded, BuildNEWSTABLEMoneyUDN,
+                    BuildNEWSTABLEMoneyUDNUploaded)

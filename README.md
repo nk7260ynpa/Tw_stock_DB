@@ -5,7 +5,7 @@
 TWSE 額外包含 CompanyInfo、IndustryMap、QuarterRevenue、QuarterRevenueUploaded，
 以及 MGTS 前綴的資料表（MGTSDailyPrice、MGTSUploadDate）、FAOI 前綴的資料表（FAOIDailyPrice、FAOIUploadDate）
 和 TDCC 前綴的資料表（TDCC、TDCCStockLevel）。
-NEWS 資料庫包含 CTEE（工商時報）、CNYES（鉅亨網）和 PTT（批踢踢股版）新聞資料表。
+NEWS 資料庫包含 CTEE（工商時報）、CNYES（鉅亨網）、PTT（批踢踢股版）和 MoneyUDN（聯合新聞網-經濟日報）新聞資料表。
 所有程式碼皆在 Docker container 中執行。
 
 ## 專案架構
@@ -27,7 +27,8 @@ NEWS 資料庫包含 CTEE（工商時報）、CNYES（鉅亨網）和 PTT（批�
 ├── NewsContents/            # 新聞內容儲存目錄
 │   ├── CTEE/                # 工商時報新聞內容
 │   ├── CNYES/               # 鉅亨網新聞內容
-│   └── PTT/                 # PTT 股版新聞內容
+│   ├── PTT/                 # PTT 股版新聞內容
+│   └── MoneyUDN/            # 聯合新聞網經濟日報新聞內容
 ├── docker/                  # Docker 相關設定
 │   ├── build.sh             # 建立 Docker image 腳本
 │   ├── Dockerfile           # Docker image 定義
@@ -108,3 +109,4 @@ bash docker/build.sh
 - 2026/02/27: 新增 NEWS 資料庫與 CTEE（工商時報）新聞資料表
 - 2026/02/27: 新增 CNYES（鉅亨網）新聞資料表與 CNYESUploaded 上傳記錄表
 - 2026/02/28: 新增 PTT（批踢踢股版）新聞資料表與 PTTUploaded 上傳記錄表
+- 2026/02/28: 新增 MoneyUDN（聯合新聞網-經濟日報）新聞資料表與 MoneyUDNUploaded 上傳記錄表

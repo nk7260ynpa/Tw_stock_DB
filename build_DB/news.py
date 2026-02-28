@@ -159,3 +159,45 @@ class BuildNEWSTABLEPTTUploaded(BuildNEWSTABLE):
             conn: 資料庫連線物件。
         """
         pass
+
+
+class BuildNEWSTABLEMoneyUDN(BuildNEWSTABLE):
+    """MoneyUDN（聯合新聞網-經濟日報）新聞資料表建構類別。
+
+    建立 NEWS.MoneyUDN 資料表，用於儲存聯合新聞網經濟日報的新聞資料。
+    欄位包含日期、時間、作者、標題、網址與內容檔案路徑。
+    與 PTT 相同，不包含 HashTag（標籤）和 SubHead（副標題）欄位。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後的後處理步驟。
+
+        MoneyUDN 資料表無需初始數據匯入，不執行任何後處理。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        pass
+
+
+class BuildNEWSTABLEMoneyUDNUploaded(BuildNEWSTABLE):
+    """MoneyUDNUploaded 資料表建構類別。
+
+    建立 NEWS.MoneyUDNUploaded 資料表，用於記錄已抓取過 MoneyUDN 新聞的日期。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後的後處理步驟。
+
+        MoneyUDNUploaded 資料表無需初始數據匯入，不執行任何後處理。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        pass

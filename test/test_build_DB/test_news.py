@@ -5,7 +5,9 @@ import pytest
 from build_DB.base import BaseBuildTABLE
 from build_DB.news import (BuildNEWS, BuildNEWSTABLE, BuildNEWSTABLECTEE,
                             BuildNEWSTABLECNYES, BuildNEWSTABLECNYESUploaded,
-                            BuildNEWSTABLEPTT, BuildNEWSTABLEPTTUploaded)
+                            BuildNEWSTABLEPTT, BuildNEWSTABLEPTTUploaded,
+                            BuildNEWSTABLEMoneyUDN,
+                            BuildNEWSTABLEMoneyUDNUploaded)
 
 
 class TestBuildNEWS:
@@ -464,3 +466,162 @@ class TestBuildNEWSTABLEPTTUploaded:
         mock_conn.execute.assert_called_once()
         mock_conn.commit.assert_called_once()
         build_ptt_uploaded.post_process.assert_called_once_with(mock_conn)
+
+
+class TestBuildNEWSTABLEMoneyUDN:
+    """測試 BuildNEWSTABLEMoneyUDN 資料表建構類別。"""
+
+    def test_table_name(self):
+        """MoneyUDN 資料表名稱應為 'MoneyUDN'。"""
+        build_moneyudn = BuildNEWSTABLEMoneyUDN()
+        assert build_moneyudn.table_name == "MoneyUDN"
+
+    def test_sql_file_path(self):
+        """MoneyUDN 的 SQL 檔案路徑應正確。"""
+        build_moneyudn = BuildNEWSTABLEMoneyUDN()
+        assert build_moneyudn.sql_file_path == os.path.join(
+            "build_DB", "NEWS_sql", "MoneyUDN.sql"
+        )
+
+    def test_sql_content(self):
+        """MoneyUDN 的 SQL 內容應包含 CREATE TABLE 語句。"""
+        build_moneyudn = BuildNEWSTABLEMoneyUDN()
+        assert "CREATE TABLE" in build_moneyudn.sql
+        assert "`NEWS`.`MoneyUDN`" in build_moneyudn.sql
+        assert "`Date`" in build_moneyudn.sql
+        assert "`url`" in build_moneyudn.sql
+
+    def test_sql_no_hashtag(self):
+        """MoneyUDN 的 SQL 不應包含 HashTag 欄位。"""
+        build_moneyudn = BuildNEWSTABLEMoneyUDN()
+        assert "HashTag" not in build_moneyudn.sql
+
+    def test_sql_no_subhead(self):
+        """MoneyUDN 的 SQL 不應包含 SubHead 欄位。"""
+        build_moneyudn = BuildNEWSTABLEMoneyUDN()
+        assert "SubHead" not in build_moneyudn.sql
+
+    def test_is_subclass_of_news_table(self):
+        """BuildNEWSTABLEMoneyUDN 應繼承自 BuildNEWSTABLE。"""
+        assert issubclass(BuildNEWSTABLEMoneyUDN, BuildNEWSTABLE)
+
+    def test_get_defined_columns(self):
+        """應正確解析 MoneyUDN SQL 中所有欄位名稱。"""
+        build_moneyudn = BuildNEWSTABLEMoneyUDN()
+        columns = build_moneyudn._get_defined_columns()
+
+        expected_columns = {'Date', 'Time', 'Author', 'Head', 'url',
+                            'ContentFile'}
+        assert set(columns.keys()) == expected_columns
+
+    def test_column_definitions(self):
+        """應正確解析 MoneyUDN 欄位的型別與約束。"""
+        build_moneyudn = BuildNEWSTABLEMoneyUDN()
+        columns = build_moneyudn._get_defined_columns()
+
+        assert columns['Date'] == 'DATE NOT NULL'
+        assert columns['Time'] == 'TIME DEFAULT NULL'
+        assert columns['Author'] == 'VARCHAR(100) DEFAULT NULL'
+        assert columns['Head'] == 'VARCHAR(500) NOT NULL'
+        assert columns['url'] == 'VARCHAR(1000) NOT NULL'
+        assert columns['ContentFile'] == 'VARCHAR(100) DEFAULT NULL'
+
+    def test_build_creates_table(self, mocker):
+        """資料表不存在時，應執行 CREATE TABLE、commit 並呼叫 post_process。"""
+        build_moneyudn = BuildNEWSTABLEMoneyUDN()
+        mock_conn = mocker.Mock()
+        mocker.patch.object(build_moneyudn, 'check_table_exists', return_value=False)
+        mocker.patch.object(build_moneyudn, 'post_process')
+
+        build_moneyudn.build(mock_conn)
+
+        mock_conn.execute.assert_called_once()
+        mock_conn.commit.assert_called_once()
+        build_moneyudn.post_process.assert_called_once_with(mock_conn)
+
+    def test_build_existing_table(self, mocker):
+        """資料表已存在時，應呼叫 _alter_table_add_columns 而非 CREATE TABLE。"""
+        build_moneyudn = BuildNEWSTABLEMoneyUDN()
+        mock_conn = mocker.Mock()
+        mocker.patch.object(build_moneyudn, 'check_table_exists', return_value=True)
+        mocker.patch.object(
+            build_moneyudn, '_alter_table_add_columns', return_value=set()
+        )
+        mocker.patch.object(build_moneyudn, 'post_alter')
+
+        build_moneyudn.build(mock_conn)
+
+        build_moneyudn._alter_table_add_columns.assert_called_once_with(mock_conn)
+        build_moneyudn.post_alter.assert_not_called()
+
+    def test_build_existing_table_with_missing_columns(self, mocker):
+        """資料表已存在且有缺少欄位時，應呼叫 post_alter。"""
+        build_moneyudn = BuildNEWSTABLEMoneyUDN()
+        mock_conn = mocker.Mock()
+        missing = {'ContentFile'}
+        mocker.patch.object(build_moneyudn, 'check_table_exists', return_value=True)
+        mocker.patch.object(
+            build_moneyudn, '_alter_table_add_columns', return_value=missing
+        )
+        mocker.patch.object(build_moneyudn, 'post_alter')
+
+        build_moneyudn.build(mock_conn)
+
+        build_moneyudn.post_alter.assert_called_once_with(mock_conn, missing)
+
+
+class TestBuildNEWSTABLEMoneyUDNUploaded:
+    """測試 BuildNEWSTABLEMoneyUDNUploaded 資料表建構類別。"""
+
+    def test_table_name(self):
+        """MoneyUDNUploaded 資料表名稱應為 'MoneyUDNUploaded'。"""
+        build_moneyudn_uploaded = BuildNEWSTABLEMoneyUDNUploaded()
+        assert build_moneyudn_uploaded.table_name == "MoneyUDNUploaded"
+
+    def test_sql_file_path(self):
+        """MoneyUDNUploaded 的 SQL 檔案路徑應正確。"""
+        build_moneyudn_uploaded = BuildNEWSTABLEMoneyUDNUploaded()
+        assert build_moneyudn_uploaded.sql_file_path == os.path.join(
+            "build_DB", "NEWS_sql", "MoneyUDNUploaded.sql"
+        )
+
+    def test_sql_content(self):
+        """MoneyUDNUploaded 的 SQL 內容應包含 CREATE TABLE 語句。"""
+        build_moneyudn_uploaded = BuildNEWSTABLEMoneyUDNUploaded()
+        assert "CREATE TABLE" in build_moneyudn_uploaded.sql
+        assert "`NEWS`.`MoneyUDNUploaded`" in build_moneyudn_uploaded.sql
+        assert "`Date`" in build_moneyudn_uploaded.sql
+
+    def test_is_subclass_of_news_table(self):
+        """BuildNEWSTABLEMoneyUDNUploaded 應繼承自 BuildNEWSTABLE。"""
+        assert issubclass(BuildNEWSTABLEMoneyUDNUploaded, BuildNEWSTABLE)
+
+    def test_get_defined_columns(self):
+        """應正確解析 MoneyUDNUploaded SQL 中所有欄位名稱。"""
+        build_moneyudn_uploaded = BuildNEWSTABLEMoneyUDNUploaded()
+        columns = build_moneyudn_uploaded._get_defined_columns()
+
+        expected_columns = {'Date'}
+        assert set(columns.keys()) == expected_columns
+
+    def test_column_definitions(self):
+        """應正確解析 MoneyUDNUploaded 欄位的型別與約束。"""
+        build_moneyudn_uploaded = BuildNEWSTABLEMoneyUDNUploaded()
+        columns = build_moneyudn_uploaded._get_defined_columns()
+
+        assert columns['Date'] == 'DATE NOT NULL'
+
+    def test_build_creates_table(self, mocker):
+        """資料表不存在時，應執行 CREATE TABLE、commit 並呼叫 post_process。"""
+        build_moneyudn_uploaded = BuildNEWSTABLEMoneyUDNUploaded()
+        mock_conn = mocker.Mock()
+        mocker.patch.object(
+            build_moneyudn_uploaded, 'check_table_exists', return_value=False
+        )
+        mocker.patch.object(build_moneyudn_uploaded, 'post_process')
+
+        build_moneyudn_uploaded.build(mock_conn)
+
+        mock_conn.execute.assert_called_once()
+        mock_conn.commit.assert_called_once()
+        build_moneyudn_uploaded.post_process.assert_called_once_with(mock_conn)

@@ -173,5 +173,7 @@ NewsContents/CNYES/*.md
 NewsContents/CNYES/*/
 NewsContents/PTT/*.md
 NewsContents/PTT/*/
+NewsContents/MoneyUDN/*.md
+NewsContents/MoneyUDN/*/
 
 .DS_Store
