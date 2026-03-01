@@ -16,7 +16,8 @@ NEWS 資料庫包含 CTEE（工商時報）、CNYES（鉅亨網）、PTT（批�
 ├── routers.py               # MySQLRouter 連線路由
 ├── clients.py               # SQLAlchemy + pymysql 連線設定
 ├── run.sh                   # 一鍵啟動腳本
-├── requirements.txt         # Python 套件依賴
+├── pyproject.toml           # PEP 621 套件定義（dbmaker）
+├── requirements.txt         # Docker 環境釘版依賴
 ├── build_DB/                # 資料庫建構模組
 │   ├── base.py              # 核心抽象類別（BuildEmptyDB、BaseBuildTABLE、BaseBuild）
 │   ├── twse.py              # TWSE 資料庫實作
@@ -110,3 +111,4 @@ bash docker/build.sh
 - 2026/02/27: 新增 CNYES（鉅亨網）新聞資料表與 CNYESUploaded 上傳記錄表
 - 2026/02/28: 新增 PTT（批踢踢股版）新聞資料表與 PTTUploaded 上傳記錄表
 - 2026/02/28: 新增 MoneyUDN（聯合新聞網-經濟日報）新聞資料表與 MoneyUDNUploaded 上傳記錄表
+- 2026/03/01: 新增 pyproject.toml，改用 `pip install .` 安裝套件至 site-packages

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbmaker"
+version = "1.0.0"
+description = "台灣股市資料庫建構工具 — 建立 TWSE、TPEX、TAIFEX、NEWS 四個 MySQL 資料庫"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+    "mysql-connector-python",
+    "pymysql",
+    "cryptography",
+    "easydict",
+    "pandas",
+    "sqlalchemy",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-mock",
+]
+
+[tool.setuptools]
+py-modules = ["main", "routers", "clients"]
+
+[tool.setuptools.packages.find]
+include = ["build_DB*"]
+
+[tool.setuptools.package-data]
+"build_DB" = ["*_sql/*.sql", "*_sql/*.csv"]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]

@@ -7,9 +7,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /workspace
 
 COPY ../ /workspace/
-COPY ../build_DB /workspace/build_DB
-COPY ../requirements.txt /workspace/requirements.txt
 RUN pip install -r requirements.txt
+RUN pip install .
 RUN mkdir -p /workspace/logs
 
 CMD ["python", "main.py"]
