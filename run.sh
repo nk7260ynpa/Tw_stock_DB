@@ -22,3 +22,7 @@ echo "MySQL 已就緒"
 docker run --rm --network db_network \
   -v "${SCRIPT_DIR}/logs:/workspace/logs" \
   nk7260ynpa/dbmaker:1.0.0
+
+# 保持前台運行，以便 preview server 不會誤判為退出
+echo "MySQL 服務運行中 (port 3306)，按 Ctrl+C 停止..."
+docker logs -f tw_stock_database
