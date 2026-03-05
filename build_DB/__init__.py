@@ -12,3 +12,4 @@ from .news import (BuildNEWS, BuildNEWSTABLE, BuildNEWSTABLECTEE,
                     BuildNEWSTABLECNYESUploaded, BuildNEWSTABLEPTT,
                     BuildNEWSTABLEPTTUploaded, BuildNEWSTABLEMoneyUDN,
                     BuildNEWSTABLEMoneyUDNUploaded)
+from .info import BuildINFO, BuildINFOTABLE, BuildINFOTABLEKnowledge

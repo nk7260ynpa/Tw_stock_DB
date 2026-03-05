@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "dbmaker"
 version = "1.0.0"
-description = "台灣股市資料庫建構工具 — 建立 TWSE、TPEX、TAIFEX、NEWS 四個 MySQL 資料庫"
+description = "台灣股市資料庫建構工具 — 建立 TWSE、TPEX、TAIFEX、NEWS、INFO 五個 MySQL 資料庫"
 requires-python = ">=3.12"
 license = "MIT"
 dependencies = [
