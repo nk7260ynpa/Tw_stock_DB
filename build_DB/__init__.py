@@ -11,5 +11,6 @@ from .news import (BuildNEWS, BuildNEWSTABLE, BuildNEWSTABLECTEE,
                     BuildNEWSTABLECTEEUploaded, BuildNEWSTABLECNYES,
                     BuildNEWSTABLECNYESUploaded, BuildNEWSTABLEPTT,
                     BuildNEWSTABLEPTTUploaded, BuildNEWSTABLEMoneyUDN,
-                    BuildNEWSTABLEMoneyUDNUploaded)
+                    BuildNEWSTABLEMoneyUDNUploaded,
+                    BuildNEWSTABLEYTTranscript)
 from .info import BuildINFO, BuildINFOTABLE, BuildINFOTABLEKnowledge

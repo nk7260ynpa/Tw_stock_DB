@@ -175,5 +175,7 @@ NewsContents/PTT/*.md
 NewsContents/PTT/*/
 NewsContents/MoneyUDN/*.md
 NewsContents/MoneyUDN/*/
+NewsContents/YT/*.md
+NewsContents/YT/*/
 
 .DS_Store

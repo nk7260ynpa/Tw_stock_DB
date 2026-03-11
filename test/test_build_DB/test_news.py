@@ -7,7 +7,8 @@ from build_DB.news import (BuildNEWS, BuildNEWSTABLE, BuildNEWSTABLECTEE,
                             BuildNEWSTABLECNYES, BuildNEWSTABLECNYESUploaded,
                             BuildNEWSTABLEPTT, BuildNEWSTABLEPTTUploaded,
                             BuildNEWSTABLEMoneyUDN,
-                            BuildNEWSTABLEMoneyUDNUploaded)
+                            BuildNEWSTABLEMoneyUDNUploaded,
+                            BuildNEWSTABLEYTTranscript)
 
 
 class TestBuildNEWS:
@@ -625,3 +626,106 @@ class TestBuildNEWSTABLEMoneyUDNUploaded:
         mock_conn.execute.assert_called_once()
         mock_conn.commit.assert_called_once()
         build_moneyudn_uploaded.post_process.assert_called_once_with(mock_conn)
+
+
+class TestBuildNEWSTABLEYTTranscript:
+    """測試 BuildNEWSTABLEYTTranscript 資料表建構類別。"""
+
+    def test_table_name(self):
+        """YTTranscript 資料表名稱應為 'YTTranscript'。"""
+        build_yt = BuildNEWSTABLEYTTranscript()
+        assert build_yt.table_name == "YTTranscript"
+
+    def test_sql_file_path(self):
+        """YTTranscript 的 SQL 檔案路徑應正確。"""
+        build_yt = BuildNEWSTABLEYTTranscript()
+        assert build_yt.sql_file_path == os.path.join(
+            "build_DB", "NEWS_sql", "YTTranscript.sql"
+        )
+
+    def test_sql_content(self):
+        """YTTranscript 的 SQL 內容應包含 CREATE TABLE 語句。"""
+        build_yt = BuildNEWSTABLEYTTranscript()
+        assert "CREATE TABLE" in build_yt.sql
+        assert "`NEWS`.`YTTranscript`" in build_yt.sql
+        assert "`Date`" in build_yt.sql
+        assert "`url`" in build_yt.sql
+
+    def test_sql_has_status_column(self):
+        """YTTranscript 的 SQL 應包含 Status 欄位。"""
+        build_yt = BuildNEWSTABLEYTTranscript()
+        assert "Status" in build_yt.sql
+
+    def test_sql_has_duration_column(self):
+        """YTTranscript 的 SQL 應包含 Duration 欄位。"""
+        build_yt = BuildNEWSTABLEYTTranscript()
+        assert "Duration" in build_yt.sql
+
+    def test_is_subclass_of_news_table(self):
+        """BuildNEWSTABLEYTTranscript 應繼承自 BuildNEWSTABLE。"""
+        assert issubclass(BuildNEWSTABLEYTTranscript, BuildNEWSTABLE)
+
+    def test_get_defined_columns(self):
+        """應正確解析 YTTranscript SQL 中所有欄位名稱。"""
+        build_yt = BuildNEWSTABLEYTTranscript()
+        columns = build_yt._get_defined_columns()
+
+        expected_columns = {'Date', 'Title', 'url', 'Duration',
+                            'ContentFile', 'Status', 'ErrorMessage'}
+        assert set(columns.keys()) == expected_columns
+
+    def test_column_definitions(self):
+        """應正確解析 YTTranscript 欄位的型別與約束。"""
+        build_yt = BuildNEWSTABLEYTTranscript()
+        columns = build_yt._get_defined_columns()
+
+        assert columns['Date'] == 'DATE NOT NULL'
+        assert columns['Title'] == 'VARCHAR(500) DEFAULT NULL'
+        assert columns['url'] == 'VARCHAR(1000) NOT NULL'
+        assert columns['Duration'] == 'VARCHAR(20) DEFAULT NULL'
+        assert columns['ContentFile'] == 'VARCHAR(100) DEFAULT NULL'
+        assert "ENUM" in columns['Status']
+        assert columns['ErrorMessage'] == 'VARCHAR(1000) DEFAULT NULL'
+
+    def test_build_creates_table(self, mocker):
+        """資料表不存在時，應執行 CREATE TABLE、commit 並呼叫 post_process。"""
+        build_yt = BuildNEWSTABLEYTTranscript()
+        mock_conn = mocker.Mock()
+        mocker.patch.object(build_yt, 'check_table_exists', return_value=False)
+        mocker.patch.object(build_yt, 'post_process')
+
+        build_yt.build(mock_conn)
+
+        mock_conn.execute.assert_called_once()
+        mock_conn.commit.assert_called_once()
+        build_yt.post_process.assert_called_once_with(mock_conn)
+
+    def test_build_existing_table(self, mocker):
+        """資料表已存在時，應呼叫 _alter_table_add_columns 而非 CREATE TABLE。"""
+        build_yt = BuildNEWSTABLEYTTranscript()
+        mock_conn = mocker.Mock()
+        mocker.patch.object(build_yt, 'check_table_exists', return_value=True)
+        mocker.patch.object(
+            build_yt, '_alter_table_add_columns', return_value=set()
+        )
+        mocker.patch.object(build_yt, 'post_alter')
+
+        build_yt.build(mock_conn)
+
+        build_yt._alter_table_add_columns.assert_called_once_with(mock_conn)
+        build_yt.post_alter.assert_not_called()
+
+    def test_build_existing_table_with_missing_columns(self, mocker):
+        """資料表已存在且有缺少欄位時，應呼叫 post_alter。"""
+        build_yt = BuildNEWSTABLEYTTranscript()
+        mock_conn = mocker.Mock()
+        missing = {'Status'}
+        mocker.patch.object(build_yt, 'check_table_exists', return_value=True)
+        mocker.patch.object(
+            build_yt, '_alter_table_add_columns', return_value=missing
+        )
+        mocker.patch.object(build_yt, 'post_alter')
+
+        build_yt.build(mock_conn)
+
+        build_yt.post_alter.assert_called_once_with(mock_conn, missing)

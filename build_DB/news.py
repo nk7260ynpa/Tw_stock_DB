@@ -201,3 +201,24 @@ class BuildNEWSTABLEMoneyUDNUploaded(BuildNEWSTABLE):
             conn: 資料庫連線物件。
         """
         pass
+
+
+class BuildNEWSTABLEYTTranscript(BuildNEWSTABLE):
+    """YTTranscript（YouTube 逐字稿）資料表建構類別。
+
+    建立 NEWS.YTTranscript 資料表，用於儲存 YouTube 影片逐字稿資料。
+    欄位包含日期、標題、網址、影片長度、內容檔案路徑、處理狀態與錯誤訊息。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後的後處理步驟。
+
+        YTTranscript 資料表無需初始數據匯入，不執行任何後處理。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        pass
