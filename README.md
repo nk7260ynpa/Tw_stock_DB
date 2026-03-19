@@ -7,7 +7,7 @@ TWSE 額外包含 CompanyInfo、IndustryMap、QuarterRevenue、QuarterRevenueUpl
 和 TDCC 前綴的資料表（TDCC、TDCCStockLevel）。
 NEWS 資料庫包含 CTEE（工商時報）、CNYES（鉅亨網）、PTT（批踢踢股版）、MoneyUDN（聯合新聞網-經濟日報）和 YTTranscript（YouTube 逐字稿）資料表。
 INFO 資料庫包含 Knowledge（台股知識庫）資料表，儲存台股交易基礎、費用稅務、股利除權息、股票類型、技術指標與實用公式等知識。
-SPECIAL_INFO 資料庫包含 OilPrice（國際原油價格）和 OilPriceUploaded（已上傳日期記錄）資料表。
+SPECIAL_INFO 資料庫包含 OilPrice（國際原油價格）、GoldPrice（國際黃金價格）、BitcoinPrice（比特幣價格）、CurrencyPrice（國際匯率價格）及其對應的 Uploaded 資料表。
 所有程式碼皆在 Docker container 中執行。
 
 ## 專案架構
@@ -123,3 +123,4 @@ bash docker/build.sh
 - 2026/03/05: 新增 INFO 資料庫與 Knowledge（台股知識庫）資料表，含 35 筆初始知識資料
 - 2026/03/11: 新增 YTTranscript（YouTube 逐字稿）資料表與 NewsContents/YT 內容儲存目錄
 - 2026/03/18: 新增 SPECIAL_INFO 資料庫，含 OilPrice（國際原油價格）與 OilPriceUploaded（已上傳日期記錄）資料表
+- 2026/03/19: SPECIAL_INFO 新增 GoldPrice（黃金）、BitcoinPrice（比特幣）、CurrencyPrice（匯率）及其 Uploaded 資料表

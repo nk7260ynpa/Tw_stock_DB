@@ -16,4 +16,10 @@ from .news import (BuildNEWS, BuildNEWSTABLE, BuildNEWSTABLECTEE,
 from .info import BuildINFO, BuildINFOTABLE, BuildINFOTABLEKnowledge
 from .special_info import (BuildSPECIAL_INFO, BuildSPECIAL_INFOTABLE,
                             BuildSPECIAL_INFOTABLEOilPrice,
-                            BuildSPECIAL_INFOTABLEOilPriceUploaded)
+                            BuildSPECIAL_INFOTABLEOilPriceUploaded,
+                            BuildSPECIAL_INFOTABLEGoldPrice,
+                            BuildSPECIAL_INFOTABLEGoldPriceUploaded,
+                            BuildSPECIAL_INFOTABLEBitcoinPrice,
+                            BuildSPECIAL_INFOTABLEBitcoinPriceUploaded,
+                            BuildSPECIAL_INFOTABLECurrencyPrice,
+                            BuildSPECIAL_INFOTABLECurrencyPriceUploaded)

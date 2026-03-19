@@ -1,0 +1,3 @@
+CREATE TABLE `SPECIAL_INFO`.`BitcoinPriceUploaded` (
+    `Date` DATE NOT NULL PRIMARY KEY COMMENT '已上傳日期'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='比特幣價格已上傳日期記錄';
