@@ -1,0 +1,3 @@
+CREATE TABLE `SPECIAL_INFO`.`IndicesPriceUploaded` (
+    `Date` DATE NOT NULL PRIMARY KEY COMMENT '已上傳日期'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='股市指數已上傳日期記錄';

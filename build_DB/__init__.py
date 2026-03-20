@@ -22,4 +22,6 @@ from .special_info import (BuildSPECIAL_INFO, BuildSPECIAL_INFOTABLE,
                             BuildSPECIAL_INFOTABLEBitcoinPrice,
                             BuildSPECIAL_INFOTABLEBitcoinPriceUploaded,
                             BuildSPECIAL_INFOTABLECurrencyPrice,
-                            BuildSPECIAL_INFOTABLECurrencyPriceUploaded)
+                            BuildSPECIAL_INFOTABLECurrencyPriceUploaded,
+                            BuildSPECIAL_INFOTABLEIndicesPrice,
+                            BuildSPECIAL_INFOTABLEIndicesPriceUploaded)

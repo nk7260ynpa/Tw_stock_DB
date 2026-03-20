@@ -208,3 +208,46 @@ class BuildSPECIAL_INFOTABLECurrencyPriceUploaded(BuildSPECIAL_INFOTABLE):
             conn: 資料庫連線物件。
         """
         pass
+
+
+class BuildSPECIAL_INFOTABLEIndicesPrice(BuildSPECIAL_INFOTABLE):
+    """IndicesPrice（國際股市指數）資料表建構類別。
+
+    建立 SPECIAL_INFO.IndicesPrice 資料表，用於儲存國際股市指數資料。
+    欄位包含日期、指數類型（DowJones、Nasdaq）、開盤價、最高價、最低價、
+    收盤價與成交量。複合主鍵為 (Date, Product)。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後的後處理步驟。
+
+        IndicesPrice 資料表無需初始數據匯入，不執行任何後處理。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        pass
+
+
+class BuildSPECIAL_INFOTABLEIndicesPriceUploaded(BuildSPECIAL_INFOTABLE):
+    """IndicesPriceUploaded（股市指數已上傳日期記錄）資料表建構類別。
+
+    建立 SPECIAL_INFO.IndicesPriceUploaded 資料表，
+    用於記錄已上傳股市指數資料的日期。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後的後處理步驟。
+
+        IndicesPriceUploaded 資料表無需初始數據匯入，不執行任何後處理。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        pass
