@@ -65,3 +65,34 @@ class BuildINFOTABLEKnowledge(BuildINFOTABLE):
         )
         conn.commit()
         logger.info("已匯入 %d 筆知識資料至 Knowledge 資料表", len(df))
+
+
+class BuildINFOTABLETradingCalendar(BuildINFOTABLE):
+    """TradingCalendar（台股開休市日曆）資料表建構類別。
+
+    建立 INFO.TradingCalendar 資料表，用於記錄台股開休市日期。
+    欄位包含 Date（日期主鍵）、IsOpen（1=開市/0=休市）與
+    Description（休市原因說明）。建立後自動從 CSV 匯入初始日曆資料。
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def post_process(self, conn):
+        """建立資料表後匯入初始日曆資料。
+
+        從 build_DB/INFO_sql/trading_calendar_data.csv 讀取日曆資料，
+        並以 pandas 寫入 TradingCalendar 資料表。
+
+        Args:
+            conn: 資料庫連線物件。
+        """
+        df = pd.read_csv("build_DB/INFO_sql/trading_calendar_data.csv")
+        df.to_sql(
+            "TradingCalendar", conn,
+            if_exists='append', index=False, chunksize=1000
+        )
+        conn.commit()
+        logger.info(
+            "已匯入 %d 筆日曆資料至 TradingCalendar 資料表", len(df)
+        )

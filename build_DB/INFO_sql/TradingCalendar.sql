@@ -1,0 +1,6 @@
+CREATE TABLE `INFO`.`TradingCalendar` (
+    `Date` DATE NOT NULL,
+    `IsOpen` TINYINT(1) NOT NULL DEFAULT 1,
+    `Description` VARCHAR(100) DEFAULT NULL,
+    PRIMARY KEY (`Date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

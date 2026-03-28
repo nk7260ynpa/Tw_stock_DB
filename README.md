@@ -6,7 +6,9 @@ TWSE 額外包含 CompanyInfo、IndustryMap、QuarterRevenue、QuarterRevenueUpl
 以及 MGTS 前綴的資料表（MGTSDailyPrice、MGTSUploadDate）、FAOI 前綴的資料表（FAOIDailyPrice、FAOIUploadDate）
 和 TDCC 前綴的資料表（TDCC、TDCCStockLevel）。
 NEWS 資料庫包含 CTEE（工商時報）、CNYES（鉅亨網）、PTT（批踢踢股版）、MoneyUDN（聯合新聞網-經濟日報）和 YTTranscript（YouTube 逐字稿）資料表。
-INFO 資料庫包含 Knowledge（台股知識庫）資料表，儲存台股交易基礎、費用稅務、股利除權息、股票類型、技術指標與實用公式等知識。
+INFO 資料庫包含 Knowledge（台股知識庫）與 TradingCalendar（台股開休市日曆）資料表，
+Knowledge 儲存台股交易基礎、費用稅務、股利除權息、股票類型、技術指標與實用公式等知識，
+TradingCalendar 記錄台股每日開休市狀態（含週末與國定假日），預設包含 2026 全年資料。
 SPECIAL_INFO 資料庫包含 OilPrice（國際原油價格）、GoldPrice（國際黃金價格）、BitcoinPrice（比特幣價格）、CurrencyPrice（國際匯率價格）、IndicesPrice（國際股市指數）及其對應的 Uploaded 資料表。
 所有程式碼皆在 Docker container 中執行。
 
@@ -125,3 +127,4 @@ bash docker/build.sh
 - 2026/03/18: 新增 SPECIAL_INFO 資料庫，含 OilPrice（國際原油價格）與 OilPriceUploaded（已上傳日期記錄）資料表
 - 2026/03/19: SPECIAL_INFO 新增 GoldPrice（黃金）、BitcoinPrice（比特幣）、CurrencyPrice（匯率）及其 Uploaded 資料表
 - 2026/03/21: SPECIAL_INFO 新增 IndicesPrice（國際股市指數，道瓊/納斯達克共用 Product 欄位）及 IndicesPriceUploaded 資料表
+- 2026/03/28: INFO 新增 TradingCalendar（台股開休市日曆）資料表，含 2026 全年 365 筆開休市資料

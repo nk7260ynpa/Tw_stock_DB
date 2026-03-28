@@ -13,7 +13,8 @@ from .news import (BuildNEWS, BuildNEWSTABLE, BuildNEWSTABLECTEE,
                     BuildNEWSTABLEPTTUploaded, BuildNEWSTABLEMoneyUDN,
                     BuildNEWSTABLEMoneyUDNUploaded,
                     BuildNEWSTABLEYTTranscript)
-from .info import BuildINFO, BuildINFOTABLE, BuildINFOTABLEKnowledge
+from .info import (BuildINFO, BuildINFOTABLE, BuildINFOTABLEKnowledge,
+                    BuildINFOTABLETradingCalendar)
 from .special_info import (BuildSPECIAL_INFO, BuildSPECIAL_INFOTABLE,
                             BuildSPECIAL_INFOTABLEOilPrice,
                             BuildSPECIAL_INFOTABLEOilPriceUploaded,
